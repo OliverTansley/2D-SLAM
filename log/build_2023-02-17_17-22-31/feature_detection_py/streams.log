@@ -1,0 +1,24 @@
+[0.747s] Invoking command in '/home/u2028576/slam_project/build/feature_detection_py': PYTHONPATH=/home/u2028576/slam_project/build/feature_detection_py/prefix_override:/home/u2028576/slam_project/install/feature_detection_py/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --uninstall --editable --build-directory /home/u2028576/slam_project/build/feature_detection_py/build
+[1.008s] running develop
+[1.210s] Invoked command in '/home/u2028576/slam_project/build/feature_detection_py' returned '0': PYTHONPATH=/home/u2028576/slam_project/build/feature_detection_py/prefix_override:/home/u2028576/slam_project/install/feature_detection_py/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --uninstall --editable --build-directory /home/u2028576/slam_project/build/feature_detection_py/build
+[1.211s] Invoking command in '/home/u2028576/slam_project/feature_detection_py': PYTHONPATH=/home/u2028576/slam_project/build/feature_detection_py/prefix_override:/home/u2028576/slam_project/install/feature_detection_py/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/feature_detection_py build --build-base /home/u2028576/slam_project/build/feature_detection_py/build install --record /home/u2028576/slam_project/build/feature_detection_py/install.log --single-version-externally-managed
+[1.519s] running egg_info
+[1.519s] writing ../build/feature_detection_py/feature_detection_py.egg-info/PKG-INFO
+[1.519s] writing dependency_links to ../build/feature_detection_py/feature_detection_py.egg-info/dependency_links.txt
+[1.519s] writing entry points to ../build/feature_detection_py/feature_detection_py.egg-info/entry_points.txt
+[1.519s] writing requirements to ../build/feature_detection_py/feature_detection_py.egg-info/requires.txt
+[1.519s] writing top-level names to ../build/feature_detection_py/feature_detection_py.egg-info/top_level.txt
+[1.522s] reading manifest file '../build/feature_detection_py/feature_detection_py.egg-info/SOURCES.txt'
+[1.522s] writing manifest file '../build/feature_detection_py/feature_detection_py.egg-info/SOURCES.txt'
+[1.523s] running build
+[1.523s] running build_py
+[1.523s] running install
+[1.523s] running install_lib
+[1.525s] running install_data
+[1.525s] running install_egg_info
+[1.526s] removing '/home/u2028576/slam_project/install/feature_detection_py/lib/python3.10/site-packages/feature_detection_py-0.0.0-py3.10.egg-info' (and everything under it)
+[1.528s] Copying ../build/feature_detection_py/feature_detection_py.egg-info to /home/u2028576/slam_project/install/feature_detection_py/lib/python3.10/site-packages/feature_detection_py-0.0.0-py3.10.egg-info
+[1.528s] running install_scripts
+[1.545s] Installing LineDetector script to /home/u2028576/slam_project/install/feature_detection_py/lib/feature_detection_py
+[1.545s] writing list of installed files to '/home/u2028576/slam_project/build/feature_detection_py/install.log'
+[1.574s] Invoked command in '/home/u2028576/slam_project/feature_detection_py' returned '0': PYTHONPATH=/home/u2028576/slam_project/build/feature_detection_py/prefix_override:/home/u2028576/slam_project/install/feature_detection_py/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/feature_detection_py build --build-base /home/u2028576/slam_project/build/feature_detection_py/build install --record /home/u2028576/slam_project/build/feature_detection_py/install.log --single-version-externally-managed

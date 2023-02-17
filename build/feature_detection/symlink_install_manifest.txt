@@ -1,0 +1,17 @@
+/home/u2028576/slam_project/install/feature_detection/lib/feature_detection//LineDetector.py
+/home/u2028576/slam_project/install/feature_detection/lib/feature_detection//__init__.py
+/home/u2028576/slam_project/install/feature_detection/share/ament_index/resource_index/package_run_dependencies/feature_detection
+/home/u2028576/slam_project/install/feature_detection/share/ament_index/resource_index/parent_prefix_path/feature_detection
+/home/u2028576/slam_project/install/feature_detection/share/feature_detection/environment/ament_prefix_path.sh
+/home/u2028576/slam_project/install/feature_detection/share/feature_detection/environment/ament_prefix_path.dsv
+/home/u2028576/slam_project/install/feature_detection/share/feature_detection/environment/path.sh
+/home/u2028576/slam_project/install/feature_detection/share/feature_detection/environment/path.dsv
+/home/u2028576/slam_project/install/feature_detection/share/feature_detection/local_setup.bash
+/home/u2028576/slam_project/install/feature_detection/share/feature_detection/local_setup.sh
+/home/u2028576/slam_project/install/feature_detection/share/feature_detection/local_setup.zsh
+/home/u2028576/slam_project/install/feature_detection/share/feature_detection/local_setup.dsv
+/home/u2028576/slam_project/install/feature_detection/share/feature_detection/package.dsv
+/home/u2028576/slam_project/install/feature_detection/share/ament_index/resource_index/packages/feature_detection
+/home/u2028576/slam_project/install/feature_detection/share/feature_detection/cmake/feature_detectionConfig.cmake
+/home/u2028576/slam_project/install/feature_detection/share/feature_detection/cmake/feature_detectionConfig-version.cmake
+/home/u2028576/slam_project/install/feature_detection/share/feature_detection/package.xml

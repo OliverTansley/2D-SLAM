@@ -1,0 +1,23 @@
+running develop
+running egg_info
+writing ../build/feature_detection_py/feature_detection_py.egg-info/PKG-INFO
+writing dependency_links to ../build/feature_detection_py/feature_detection_py.egg-info/dependency_links.txt
+writing entry points to ../build/feature_detection_py/feature_detection_py.egg-info/entry_points.txt
+writing requirements to ../build/feature_detection_py/feature_detection_py.egg-info/requires.txt
+writing top-level names to ../build/feature_detection_py/feature_detection_py.egg-info/top_level.txt
+reading manifest file '../build/feature_detection_py/feature_detection_py.egg-info/SOURCES.txt'
+writing manifest file '../build/feature_detection_py/feature_detection_py.egg-info/SOURCES.txt'
+running build
+running build_py
+copying feature_detection_py/LineDetector.py -> /home/u2028576/slam_project/build/feature_detection_py/build/lib/feature_detection_py
+running install
+running install_lib
+copying /home/u2028576/slam_project/build/feature_detection_py/build/lib/feature_detection_py/LineDetector.py -> /home/u2028576/slam_project/install/feature_detection_py/lib/python3.10/site-packages/feature_detection_py
+byte-compiling /home/u2028576/slam_project/install/feature_detection_py/lib/python3.10/site-packages/feature_detection_py/LineDetector.py to LineDetector.cpython-310.pyc
+running install_data
+running install_egg_info
+removing '/home/u2028576/slam_project/install/feature_detection_py/lib/python3.10/site-packages/feature_detection_py-0.0.0-py3.10.egg-info' (and everything under it)
+Copying ../build/feature_detection_py/feature_detection_py.egg-info to /home/u2028576/slam_project/install/feature_detection_py/lib/python3.10/site-packages/feature_detection_py-0.0.0-py3.10.egg-info
+running install_scripts
+Installing LineDetector script to /home/u2028576/slam_project/install/feature_detection_py/lib/feature_detection_py
+writing list of installed files to '/home/u2028576/slam_project/build/feature_detection_py/install.log'

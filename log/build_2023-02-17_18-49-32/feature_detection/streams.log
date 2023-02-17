@@ -1,0 +1,23 @@
+[0.028s] Invoking command in '/home/u2028576/slam_project/build/feature_detection': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/u2028576/slam_project/install/turtlebot3_teleop:/home/u2028576/slam_project/install/turtlebot3_example:/home/u2028576/slam_project/install/feature_detection_py:/opt/ros/humble /usr/bin/cmake --build /home/u2028576/slam_project/build/feature_detection -- -j6 -l6
+[0.086s] Invoked command in '/home/u2028576/slam_project/build/feature_detection' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/u2028576/slam_project/install/turtlebot3_teleop:/home/u2028576/slam_project/install/turtlebot3_example:/home/u2028576/slam_project/install/feature_detection_py:/opt/ros/humble /usr/bin/cmake --build /home/u2028576/slam_project/build/feature_detection -- -j6 -l6
+[0.144s] Invoking command in '/home/u2028576/slam_project/build/feature_detection': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/u2028576/slam_project/install/turtlebot3_teleop:/home/u2028576/slam_project/install/turtlebot3_example:/home/u2028576/slam_project/install/feature_detection_py:/opt/ros/humble /usr/bin/cmake --install /home/u2028576/slam_project/build/feature_detection
+[0.157s] -- Install configuration: ""
+[0.158s] -- Execute custom install script
+[0.158s] -- Up-to-date symlink: /home/u2028576/slam_project/install/feature_detection/lib/feature_detection//LineDetector.py
+[0.158s] -- Up-to-date symlink: /home/u2028576/slam_project/install/feature_detection/lib/feature_detection//__init__.py
+[0.158s] -- Up-to-date symlink: /home/u2028576/slam_project/install/feature_detection/share/ament_index/resource_index/package_run_dependencies/feature_detection
+[0.158s] -- Up-to-date symlink: /home/u2028576/slam_project/install/feature_detection/share/ament_index/resource_index/parent_prefix_path/feature_detection
+[0.158s] -- Up-to-date symlink: /home/u2028576/slam_project/install/feature_detection/share/feature_detection/environment/ament_prefix_path.sh
+[0.158s] -- Up-to-date symlink: /home/u2028576/slam_project/install/feature_detection/share/feature_detection/environment/ament_prefix_path.dsv
+[0.158s] -- Up-to-date symlink: /home/u2028576/slam_project/install/feature_detection/share/feature_detection/environment/path.sh
+[0.158s] -- Up-to-date symlink: /home/u2028576/slam_project/install/feature_detection/share/feature_detection/environment/path.dsv
+[0.161s] -- Up-to-date symlink: /home/u2028576/slam_project/install/feature_detection/share/feature_detection/local_setup.bash
+[0.161s] -- Up-to-date symlink: /home/u2028576/slam_project/install/feature_detection/share/feature_detection/local_setup.sh
+[0.161s] -- Up-to-date symlink: /home/u2028576/slam_project/install/feature_detection/share/feature_detection/local_setup.zsh
+[0.161s] -- Up-to-date symlink: /home/u2028576/slam_project/install/feature_detection/share/feature_detection/local_setup.dsv
+[0.161s] -- Symlinking: /home/u2028576/slam_project/install/feature_detection/share/feature_detection/package.dsv
+[0.168s] -- Up-to-date symlink: /home/u2028576/slam_project/install/feature_detection/share/ament_index/resource_index/packages/feature_detection
+[0.169s] -- Up-to-date symlink: /home/u2028576/slam_project/install/feature_detection/share/feature_detection/cmake/feature_detectionConfig.cmake
+[0.169s] -- Up-to-date symlink: /home/u2028576/slam_project/install/feature_detection/share/feature_detection/cmake/feature_detectionConfig-version.cmake
+[0.169s] -- Up-to-date symlink: /home/u2028576/slam_project/install/feature_detection/share/feature_detection/package.xml
+[0.412s] Invoked command in '/home/u2028576/slam_project/build/feature_detection' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/u2028576/slam_project/install/turtlebot3_teleop:/home/u2028576/slam_project/install/turtlebot3_example:/home/u2028576/slam_project/install/feature_detection_py:/opt/ros/humble /usr/bin/cmake --install /home/u2028576/slam_project/build/feature_detection

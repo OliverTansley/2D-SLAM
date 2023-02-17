@@ -1,0 +1,6 @@
+source;share/feature_detection_py/hook/pythonpath.ps1
+source;share/feature_detection_py/hook/pythonpath.dsv
+source;share/feature_detection_py/hook/pythonpath.sh
+source;share/feature_detection_py/hook/ament_prefix_path.ps1
+source;share/feature_detection_py/hook/ament_prefix_path.dsv
+source;share/feature_detection_py/hook/ament_prefix_path.sh
