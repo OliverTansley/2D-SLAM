@@ -1,0 +1,24 @@
+running egg_info
+writing ../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info/PKG-INFO
+writing dependency_links to ../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info/dependency_links.txt
+writing entry points to ../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info/entry_points.txt
+writing requirements to ../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info/requires.txt
+writing top-level names to ../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info/top_level.txt
+reading manifest file '../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info/SOURCES.txt'
+writing manifest file '../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info/SOURCES.txt'
+running build
+running build_py
+copying Extended_Kalman_Filter/EKF.py -> /home/u2028576/slam_project/build/Extended_Kalman_Filter/build/lib/Extended_Kalman_Filter
+copying Extended_Kalman_Filter/seed_segment.py -> /home/u2028576/slam_project/build/Extended_Kalman_Filter/build/lib/Extended_Kalman_Filter
+running install
+running install_lib
+copying /home/u2028576/slam_project/build/Extended_Kalman_Filter/build/lib/Extended_Kalman_Filter/EKF.py -> /home/u2028576/slam_project/install/Extended_Kalman_Filter/lib/python3.10/site-packages/Extended_Kalman_Filter
+copying /home/u2028576/slam_project/build/Extended_Kalman_Filter/build/lib/Extended_Kalman_Filter/seed_segment.py -> /home/u2028576/slam_project/install/Extended_Kalman_Filter/lib/python3.10/site-packages/Extended_Kalman_Filter
+byte-compiling /home/u2028576/slam_project/install/Extended_Kalman_Filter/lib/python3.10/site-packages/Extended_Kalman_Filter/EKF.py to EKF.cpython-310.pyc
+byte-compiling /home/u2028576/slam_project/install/Extended_Kalman_Filter/lib/python3.10/site-packages/Extended_Kalman_Filter/seed_segment.py to seed_segment.cpython-310.pyc
+running install_data
+running install_egg_info
+removing '/home/u2028576/slam_project/install/Extended_Kalman_Filter/lib/python3.10/site-packages/Extended_Kalman_Filter-0.0.0-py3.10.egg-info' (and everything under it)
+Copying ../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info to /home/u2028576/slam_project/install/Extended_Kalman_Filter/lib/python3.10/site-packages/Extended_Kalman_Filter-0.0.0-py3.10.egg-info
+running install_scripts
+writing list of installed files to '/home/u2028576/slam_project/build/Extended_Kalman_Filter/install.log'

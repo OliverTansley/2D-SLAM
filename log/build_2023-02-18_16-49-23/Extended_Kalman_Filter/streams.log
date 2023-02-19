@@ -1,0 +1,36 @@
+[1.221s] Invoking command in '/home/u2028576/slam_project/Extended_Kalman_Filter': PYTHONPATH=/home/u2028576/slam_project/build/Extended_Kalman_Filter/prefix_override:/home/u2028576/slam_project/install/Extended_Kalman_Filter/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/Extended_Kalman_Filter build --build-base /home/u2028576/slam_project/build/Extended_Kalman_Filter/build install --record /home/u2028576/slam_project/build/Extended_Kalman_Filter/install.log --single-version-externally-managed
+[1.461s] running egg_info
+[1.461s] creating ../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info
+[1.462s] writing ../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info/PKG-INFO
+[1.462s] writing dependency_links to ../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info/dependency_links.txt
+[1.462s] writing entry points to ../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info/entry_points.txt
+[1.462s] writing requirements to ../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info/requires.txt
+[1.462s] writing top-level names to ../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info/top_level.txt
+[1.462s] writing manifest file '../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info/SOURCES.txt'
+[1.464s] reading manifest file '../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info/SOURCES.txt'
+[1.464s] writing manifest file '../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info/SOURCES.txt'
+[1.464s] running build
+[1.464s] running build_py
+[1.465s] creating /home/u2028576/slam_project/build/Extended_Kalman_Filter/build
+[1.465s] creating /home/u2028576/slam_project/build/Extended_Kalman_Filter/build/lib
+[1.465s] creating /home/u2028576/slam_project/build/Extended_Kalman_Filter/build/lib/Extended_Kalman_Filter
+[1.465s] copying Extended_Kalman_Filter/EKF.py -> /home/u2028576/slam_project/build/Extended_Kalman_Filter/build/lib/Extended_Kalman_Filter
+[1.466s] copying Extended_Kalman_Filter/__init__.py -> /home/u2028576/slam_project/build/Extended_Kalman_Filter/build/lib/Extended_Kalman_Filter
+[1.466s] running install
+[1.466s] running install_lib
+[1.466s] creating /home/u2028576/slam_project/install/Extended_Kalman_Filter/lib/python3.10/site-packages/Extended_Kalman_Filter
+[1.466s] copying /home/u2028576/slam_project/build/Extended_Kalman_Filter/build/lib/Extended_Kalman_Filter/EKF.py -> /home/u2028576/slam_project/install/Extended_Kalman_Filter/lib/python3.10/site-packages/Extended_Kalman_Filter
+[1.466s] copying /home/u2028576/slam_project/build/Extended_Kalman_Filter/build/lib/Extended_Kalman_Filter/__init__.py -> /home/u2028576/slam_project/install/Extended_Kalman_Filter/lib/python3.10/site-packages/Extended_Kalman_Filter
+[1.467s] byte-compiling /home/u2028576/slam_project/install/Extended_Kalman_Filter/lib/python3.10/site-packages/Extended_Kalman_Filter/EKF.py to EKF.cpython-310.pyc
+[1.468s] byte-compiling /home/u2028576/slam_project/install/Extended_Kalman_Filter/lib/python3.10/site-packages/Extended_Kalman_Filter/__init__.py to __init__.cpython-310.pyc
+[1.468s] running install_data
+[1.468s] creating /home/u2028576/slam_project/install/Extended_Kalman_Filter/share/ament_index
+[1.468s] creating /home/u2028576/slam_project/install/Extended_Kalman_Filter/share/ament_index/resource_index
+[1.468s] creating /home/u2028576/slam_project/install/Extended_Kalman_Filter/share/ament_index/resource_index/packages
+[1.469s] copying resource/Extended_Kalman_Filter -> /home/u2028576/slam_project/install/Extended_Kalman_Filter/share/ament_index/resource_index/packages
+[1.469s] copying package.xml -> /home/u2028576/slam_project/install/Extended_Kalman_Filter/share/Extended_Kalman_Filter
+[1.469s] running install_egg_info
+[1.470s] Copying ../build/Extended_Kalman_Filter/Extended_Kalman_Filter.egg-info to /home/u2028576/slam_project/install/Extended_Kalman_Filter/lib/python3.10/site-packages/Extended_Kalman_Filter-0.0.0-py3.10.egg-info
+[1.471s] running install_scripts
+[1.487s] writing list of installed files to '/home/u2028576/slam_project/build/Extended_Kalman_Filter/install.log'
+[1.582s] Invoked command in '/home/u2028576/slam_project/Extended_Kalman_Filter' returned '0': PYTHONPATH=/home/u2028576/slam_project/build/Extended_Kalman_Filter/prefix_override:/home/u2028576/slam_project/install/Extended_Kalman_Filter/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/Extended_Kalman_Filter build --build-base /home/u2028576/slam_project/build/Extended_Kalman_Filter/build install --record /home/u2028576/slam_project/build/Extended_Kalman_Filter/install.log --single-version-externally-managed

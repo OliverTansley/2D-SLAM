@@ -6,6 +6,7 @@ from scipy.odr import *
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
+
 from std_msgs.msg import Float32MultiArray
 
 
@@ -43,7 +44,7 @@ class SeedSegment:
 
     size = 30
 
-    def __init__(self,m,c,xpnts,ypnts) -> None:
+    def __init__(self,m=0,c=0,xpnts=[],ypnts=[]) -> None:
 
         self.grad = m
         self.intersect = c
@@ -54,6 +55,19 @@ class SeedSegment:
         self.points = list(zip(xpnts,ypnts))
         self.x = (self.min_x + self.max_X)/2
         self.y = (self.min_y + self.max_Y)/2
+
+    @classmethod
+    def from_Float32MultiArray(cls,m,c,max_X,max_Y,min_x,min_y):
+        seed_seg = SeedSegment()
+        seed_seg.grad = m
+        seed_seg.intersect = c
+        seed_seg.max_X = max_X
+        seed_seg.max_Y = max_Y
+        seed_seg.min_y = min_y
+        seed_seg.min_x = min_x
+        seed_seg.x = (seed_seg.min_x + seed_seg.max_X)/2
+        seed_seg.y = (seed_seg.min_y + seed_seg.max_Y)/2
+        return seed_seg
 
     def plot_line(self) -> None:
 
@@ -81,18 +95,17 @@ class LineDetector(Node):
 
     def __init__(self):
         
-        
-        self.publisher_ = self.create_publisher(Float32MultiArray, 'line_segments', 10)     # CHANGE
+        super().__init__("minimal_publisher")
+        self.publisher= self.create_publisher(Float32MultiArray, 'line_segments', 10)     # CHANGE
         
         super().__init__("minimal_subscriber")
-        self.subscription = self.create_subscription(LaserScan,"/scan",LineDetector.make_seed_segments,10)
+        self.subscription = self.create_subscription(LaserScan,"/scan",lambda msg : self.make_seed_segments(msg,self.publisher),10)
         rclpy.create_node("LineDetector")
         rclpy.spin(self)
 
 
-
     @staticmethod
-    def make_seed_segments(lidar_data) -> None:
+    def make_seed_segments(lidar_data,publisher) -> None:
         '''
         Adds seed segments to seed segment array
         '''
@@ -141,6 +154,23 @@ class LineDetector(Node):
 
                 new_segment = SeedSegment(m,c,xs[P_start:P_end],ys[P_start:P_end])
                 LineDetector.seed_segments.append(new_segment)
+                
+
+                msg = Float32MultiArray()
+            
+                features = []
+                for s in LineDetector.seed_segments:
+                    features.append(s.grad)
+                    features.append(s.intersect)
+                    features.append(s.max_X)
+                    features.append(s.max_Y)
+                    features.append(s.min_x)
+                    features.append(s.min_y)
+
+                msg.data = features
+
+                publisher.publish(msg)
+
                 i = P_end
             else:
                 i += 1

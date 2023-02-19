@@ -1,0 +1,6 @@
+source;share/Extended_Kalman_Filter/hook/pythonpath.ps1
+source;share/Extended_Kalman_Filter/hook/pythonpath.dsv
+source;share/Extended_Kalman_Filter/hook/pythonpath.sh
+source;share/Extended_Kalman_Filter/hook/ament_prefix_path.ps1
+source;share/Extended_Kalman_Filter/hook/ament_prefix_path.dsv
+source;share/Extended_Kalman_Filter/hook/ament_prefix_path.sh

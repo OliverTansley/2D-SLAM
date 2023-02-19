@@ -1,0 +1,27 @@
+[0.776s] Invoking command in '/home/u2028576/slam_project/build/turtlebot3_example': AMENT_PREFIX_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs LD_LIBRARY_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/u2028576/slam_project/build/turtlebot3_example/prefix_override:/home/u2028576/slam_project/install/turtlebot3_example/lib/python3.10/site-packages:/home/u2028576/slam_project/install/turtlebot3_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --uninstall --editable --build-directory /home/u2028576/slam_project/build/turtlebot3_example/build
+[1.032s] running develop
+[1.276s] Invoked command in '/home/u2028576/slam_project/build/turtlebot3_example' returned '0': AMENT_PREFIX_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs LD_LIBRARY_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/u2028576/slam_project/build/turtlebot3_example/prefix_override:/home/u2028576/slam_project/install/turtlebot3_example/lib/python3.10/site-packages:/home/u2028576/slam_project/install/turtlebot3_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --uninstall --editable --build-directory /home/u2028576/slam_project/build/turtlebot3_example/build
+[1.279s] Invoking command in '/home/u2028576/slam_project/turtlebot3/turtlebot3/turtlebot3_example': AMENT_PREFIX_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs LD_LIBRARY_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/u2028576/slam_project/build/turtlebot3_example/prefix_override:/home/u2028576/slam_project/install/turtlebot3_example/lib/python3.10/site-packages:/home/u2028576/slam_project/install/turtlebot3_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/turtlebot3_example build --build-base /home/u2028576/slam_project/build/turtlebot3_example/build install --record /home/u2028576/slam_project/build/turtlebot3_example/install.log --single-version-externally-managed
+[1.649s] running egg_info
+[1.651s] writing ../../../build/turtlebot3_example/turtlebot3_example.egg-info/PKG-INFO
+[1.651s] writing dependency_links to ../../../build/turtlebot3_example/turtlebot3_example.egg-info/dependency_links.txt
+[1.651s] writing entry points to ../../../build/turtlebot3_example/turtlebot3_example.egg-info/entry_points.txt
+[1.651s] writing requirements to ../../../build/turtlebot3_example/turtlebot3_example.egg-info/requires.txt
+[1.652s] writing top-level names to ../../../build/turtlebot3_example/turtlebot3_example.egg-info/top_level.txt
+[1.654s] reading manifest file '../../../build/turtlebot3_example/turtlebot3_example.egg-info/SOURCES.txt'
+[1.656s] writing manifest file '../../../build/turtlebot3_example/turtlebot3_example.egg-info/SOURCES.txt'
+[1.656s] running build
+[1.656s] running build_py
+[1.658s] running install
+[1.658s] running install_lib
+[1.661s] running install_data
+[1.662s] running install_egg_info
+[1.664s] removing '/home/u2028576/slam_project/install/turtlebot3_example/lib/python3.10/site-packages/turtlebot3_example-2.1.5-py3.10.egg-info' (and everything under it)
+[1.664s] Copying ../../../build/turtlebot3_example/turtlebot3_example.egg-info to /home/u2028576/slam_project/install/turtlebot3_example/lib/python3.10/site-packages/turtlebot3_example-2.1.5-py3.10.egg-info
+[1.665s] running install_scripts
+[1.689s] Installing turtlebot3_obstacle_detection script to /home/u2028576/slam_project/install/turtlebot3_example/lib/turtlebot3_example
+[1.691s] Installing turtlebot3_patrol_client script to /home/u2028576/slam_project/install/turtlebot3_example/lib/turtlebot3_example
+[1.691s] Installing turtlebot3_patrol_server script to /home/u2028576/slam_project/install/turtlebot3_example/lib/turtlebot3_example
+[1.691s] Installing turtlebot3_position_control script to /home/u2028576/slam_project/install/turtlebot3_example/lib/turtlebot3_example
+[1.691s] writing list of installed files to '/home/u2028576/slam_project/build/turtlebot3_example/install.log'
+[1.729s] Invoked command in '/home/u2028576/slam_project/turtlebot3/turtlebot3/turtlebot3_example' returned '0': AMENT_PREFIX_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs LD_LIBRARY_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/u2028576/slam_project/build/turtlebot3_example/prefix_override:/home/u2028576/slam_project/install/turtlebot3_example/lib/python3.10/site-packages:/home/u2028576/slam_project/install/turtlebot3_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../../build/turtlebot3_example build --build-base /home/u2028576/slam_project/build/turtlebot3_example/build install --record /home/u2028576/slam_project/build/turtlebot3_example/install.log --single-version-externally-managed

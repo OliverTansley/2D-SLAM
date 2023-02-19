@@ -1,0 +1,28 @@
+[0.369s] Invoking command in '/home/u2028576/slam_project/build/turtlebot3_node': AMENT_PREFIX_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs:/home/u2028576/slam_project/install/dynamixel_sdk:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs:/home/u2028576/slam_project/install/dynamixel_sdk:/opt/ros/humble LD_LIBRARY_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs/lib:/home/u2028576/slam_project/install/dynamixel_sdk/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/u2028576/slam_project/install/turtlebot3_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/u2028576/slam_project/build/turtlebot3_node -- -j6 -l6
+[0.465s] [ 85%] Built target turtlebot3_node_lib
+[0.511s] [100%] Built target turtlebot3_ros
+[0.757s] Invoked command in '/home/u2028576/slam_project/build/turtlebot3_node' returned '0': AMENT_PREFIX_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs:/home/u2028576/slam_project/install/dynamixel_sdk:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs:/home/u2028576/slam_project/install/dynamixel_sdk:/opt/ros/humble LD_LIBRARY_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs/lib:/home/u2028576/slam_project/install/dynamixel_sdk/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/u2028576/slam_project/install/turtlebot3_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/u2028576/slam_project/build/turtlebot3_node -- -j6 -l6
+[0.865s] Invoking command in '/home/u2028576/slam_project/build/turtlebot3_node': AMENT_PREFIX_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs:/home/u2028576/slam_project/install/dynamixel_sdk:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs:/home/u2028576/slam_project/install/dynamixel_sdk:/opt/ros/humble LD_LIBRARY_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs/lib:/home/u2028576/slam_project/install/dynamixel_sdk/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/u2028576/slam_project/install/turtlebot3_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/u2028576/slam_project/build/turtlebot3_node
+[0.871s] -- Install configuration: ""
+[0.872s] -- Execute custom install script
+[0.874s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/turtlebot3_node/param/burger.yaml
+[0.874s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/turtlebot3_node/param/waffle.yaml
+[0.874s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/turtlebot3_node/param/waffle_pi.yaml
+[0.874s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/lib/turtlebot3_node/turtlebot3_ros
+[0.874s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/ament_index/resource_index/package_run_dependencies/turtlebot3_node
+[0.874s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/ament_index/resource_index/parent_prefix_path/turtlebot3_node
+[0.874s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/turtlebot3_node/environment/ament_prefix_path.sh
+[0.874s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/turtlebot3_node/environment/ament_prefix_path.dsv
+[0.874s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/turtlebot3_node/environment/path.sh
+[0.874s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/turtlebot3_node/environment/path.dsv
+[0.874s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/turtlebot3_node/local_setup.bash
+[0.874s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/turtlebot3_node/local_setup.sh
+[0.875s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/turtlebot3_node/local_setup.zsh
+[0.875s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/turtlebot3_node/local_setup.dsv
+[0.877s] -- Symlinking: /home/u2028576/slam_project/install/turtlebot3_node/share/turtlebot3_node/package.dsv
+[0.883s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/ament_index/resource_index/packages/turtlebot3_node
+[0.883s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/turtlebot3_node/cmake/ament_cmake_export_include_directories-extras.cmake
+[0.883s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/turtlebot3_node/cmake/turtlebot3_nodeConfig.cmake
+[0.883s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/turtlebot3_node/cmake/turtlebot3_nodeConfig-version.cmake
+[0.883s] -- Up-to-date symlink: /home/u2028576/slam_project/install/turtlebot3_node/share/turtlebot3_node/package.xml
+[0.897s] Invoked command in '/home/u2028576/slam_project/build/turtlebot3_node' returned '0': AMENT_PREFIX_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs:/home/u2028576/slam_project/install/dynamixel_sdk:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs:/home/u2028576/slam_project/install/dynamixel_sdk:/opt/ros/humble LD_LIBRARY_PATH=/home/u2028576/slam_project/install/turtlebot3_msgs/lib:/home/u2028576/slam_project/install/dynamixel_sdk/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/u2028576/slam_project/install/turtlebot3_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/u2028576/slam_project/build/turtlebot3_node

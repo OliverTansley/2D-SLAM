@@ -1,26 +1,69 @@
-from DataStructures.Tree import Tree, Node
-
-from Utils.ArithmeticUtil import *
-
-import LineDetection.LineDetection as LD
+from DataStructures import Tree, Node
+from rclpy.node import Node
+from std_msgs.msg import Float32MultiArray
+from feature_detection_py.feature_detection_py.LineDetector import SeedSegment
+from geometry_msgs.msg import Pose2D, PoseArray
 import logging
 import random
 import math
 import matplotlib.pyplot as plt
 
+def point_2_point_distance(point1: tuple[int,int],point2:tuple[int,int]) -> float:
+    '''
+    Get euclidean distance between to points represented as tuples (x1,y1) (x2,y2)
+    '''
+    return math.sqrt((point1[0] - point2[0])**2 + (point1[1]-point2[1])**2)
 
-class PathPlanner:
+
+def line_get_intersect(line1,line2):
+    '''
+    Returns x and y value for the intersection of two lines
+    '''
+    i_x = (line1[1] - line2[1])/(line2[0] - line1[0])
+    i_y = (line1[0]*line2[1] - line1[1]*line2[0])/(line1[0] - line2[0])
+    return (i_x,i_y)
+
+class PathPlanner(Node):
 
     N:int = 40
     found:bool = False
     k:int = 200
 
+    start = ()
+    end = ()
+
+    lines = []
+
+    def __init__(self) -> None:
+        super.__init__('minimal_subscriber')
+        self.lines_subscription = self.create_subscription(Float32MultiArray,'line_segments',self.update_lines,10)
+        self.position_subscription = self.create_subscription(Pose2D,'robot_position',self.update_pos,10)
+
+        super.__init__('minimal_publisher')
+        self.path_publisher = self.create_publisher(PoseArray,'path',10)
+
+    def update_lines(msg):
+        PathPlanner.lines = PathPlanner.get_seed_segs(msg)
+        
+    def update_pos(msg):
+        PathPlanner.start = (msg[0],msg[1])
+
 
     @staticmethod
-    def start(start: tuple[int,int],end: tuple[int,int])->Tree:
+    def get_seed_segs(line_data):
+        seed_segs = []
+        for i in range(0,len(line_data),6):
+            seed_segs.append(SeedSegment.from_zipped_points(line_data[i],line_data[i+1],line_data[i+2],line_data[i+3],line_data[i+4],line_data[i+5]))
+
+
+    @staticmethod
+    def start(publisher)->None:
         '''
         RRT with euclidean distance heuristic
         '''
+        start = PathPlanner.start
+        end = PathPlanner.end
+
         T:Tree = Tree(start[0],start[1])
         for _ in range(PathPlanner.N):
         
@@ -37,12 +80,21 @@ class PathPlanner:
 
             # Extend tree with new node
             if not(PathPlanner.collision_detected(nearestNode,randomPos)):
-                T.addNode(nearestNode,Node(randomPos[0],randomPos[1]))
+                new_node = Node(randomPos[0],randomPos[1])
+                T.addNode(nearestNode,new_node)
                 if point_2_point_distance(randomPos,(end[0],end[1])) < 50:
                     PathPlanner.found:bool = True
+                    
+                    poses = []
+                    while new_node.x != start[0] and new_node.y != start[1]:
+                        poses.append(Pose2D(x=new_node.x,y=new_node.y,z=0))
+                        new_node = new_node.parent
 
-        return T
+                    poses.reverse()
 
+                    msg = PoseArray
+                    msg.poses = poses
+                    publisher.publish(msg)
 
     @staticmethod
     def collision_detected(node,point) -> bool:
@@ -50,7 +102,7 @@ class PathPlanner:
         m = (node.y-point[0])/(node.x-point[1]) if (node.x-point[1]) != 0 else float('inf')
         c = point[1] - m*point[0]
 
-        for segment in LD.LineDetector.seed_segments:
+        for segment in PathPlanner.lines:
             
             ix,iy = line_get_intersect([m,c],[segment.grad,segment.intersect])
 

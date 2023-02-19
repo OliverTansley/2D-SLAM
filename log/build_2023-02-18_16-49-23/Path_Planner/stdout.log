@@ -1,0 +1,37 @@
+running egg_info
+creating ../build/Path_Planner/Path_Planner.egg-info
+writing ../build/Path_Planner/Path_Planner.egg-info/PKG-INFO
+writing dependency_links to ../build/Path_Planner/Path_Planner.egg-info/dependency_links.txt
+writing entry points to ../build/Path_Planner/Path_Planner.egg-info/entry_points.txt
+writing requirements to ../build/Path_Planner/Path_Planner.egg-info/requires.txt
+writing top-level names to ../build/Path_Planner/Path_Planner.egg-info/top_level.txt
+writing manifest file '../build/Path_Planner/Path_Planner.egg-info/SOURCES.txt'
+reading manifest file '../build/Path_Planner/Path_Planner.egg-info/SOURCES.txt'
+writing manifest file '../build/Path_Planner/Path_Planner.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/u2028576/slam_project/build/Path_Planner/build
+creating /home/u2028576/slam_project/build/Path_Planner/build/lib
+creating /home/u2028576/slam_project/build/Path_Planner/build/lib/Path_Planner
+copying Path_Planner/PathPlanner.py -> /home/u2028576/slam_project/build/Path_Planner/build/lib/Path_Planner
+copying Path_Planner/DataStructures.py -> /home/u2028576/slam_project/build/Path_Planner/build/lib/Path_Planner
+copying Path_Planner/__init__.py -> /home/u2028576/slam_project/build/Path_Planner/build/lib/Path_Planner
+running install
+running install_lib
+creating /home/u2028576/slam_project/install/Path_Planner/lib/python3.10/site-packages/Path_Planner
+copying /home/u2028576/slam_project/build/Path_Planner/build/lib/Path_Planner/PathPlanner.py -> /home/u2028576/slam_project/install/Path_Planner/lib/python3.10/site-packages/Path_Planner
+copying /home/u2028576/slam_project/build/Path_Planner/build/lib/Path_Planner/DataStructures.py -> /home/u2028576/slam_project/install/Path_Planner/lib/python3.10/site-packages/Path_Planner
+copying /home/u2028576/slam_project/build/Path_Planner/build/lib/Path_Planner/__init__.py -> /home/u2028576/slam_project/install/Path_Planner/lib/python3.10/site-packages/Path_Planner
+byte-compiling /home/u2028576/slam_project/install/Path_Planner/lib/python3.10/site-packages/Path_Planner/PathPlanner.py to PathPlanner.cpython-310.pyc
+byte-compiling /home/u2028576/slam_project/install/Path_Planner/lib/python3.10/site-packages/Path_Planner/DataStructures.py to DataStructures.cpython-310.pyc
+byte-compiling /home/u2028576/slam_project/install/Path_Planner/lib/python3.10/site-packages/Path_Planner/__init__.py to __init__.cpython-310.pyc
+running install_data
+creating /home/u2028576/slam_project/install/Path_Planner/share/ament_index
+creating /home/u2028576/slam_project/install/Path_Planner/share/ament_index/resource_index
+creating /home/u2028576/slam_project/install/Path_Planner/share/ament_index/resource_index/packages
+copying resource/Path_Planner -> /home/u2028576/slam_project/install/Path_Planner/share/ament_index/resource_index/packages
+copying package.xml -> /home/u2028576/slam_project/install/Path_Planner/share/Path_Planner
+running install_egg_info
+Copying ../build/Path_Planner/Path_Planner.egg-info to /home/u2028576/slam_project/install/Path_Planner/lib/python3.10/site-packages/Path_Planner-0.0.0-py3.10.egg-info
+running install_scripts
+writing list of installed files to '/home/u2028576/slam_project/build/Path_Planner/install.log'

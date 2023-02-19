@@ -1,0 +1,20 @@
+[0.812s] Invoking command in '/home/u2028576/slam_project/movement': PYTHONPATH=/home/u2028576/slam_project/build/movement/prefix_override:/home/u2028576/slam_project/install/movement/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/movement build --build-base /home/u2028576/slam_project/build/movement/build install --record /home/u2028576/slam_project/build/movement/install.log --single-version-externally-managed
+[1.077s] running egg_info
+[1.078s] writing ../build/movement/movement.egg-info/PKG-INFO
+[1.078s] writing dependency_links to ../build/movement/movement.egg-info/dependency_links.txt
+[1.078s] writing entry points to ../build/movement/movement.egg-info/entry_points.txt
+[1.078s] writing requirements to ../build/movement/movement.egg-info/requires.txt
+[1.078s] writing top-level names to ../build/movement/movement.egg-info/top_level.txt
+[1.082s] reading manifest file '../build/movement/movement.egg-info/SOURCES.txt'
+[1.083s] writing manifest file '../build/movement/movement.egg-info/SOURCES.txt'
+[1.083s] running build
+[1.083s] running build_py
+[1.083s] running install
+[1.083s] running install_lib
+[1.084s] running install_data
+[1.085s] running install_egg_info
+[1.087s] removing '/home/u2028576/slam_project/install/movement/lib/python3.10/site-packages/movement-0.0.0-py3.10.egg-info' (and everything under it)
+[1.087s] Copying ../build/movement/movement.egg-info to /home/u2028576/slam_project/install/movement/lib/python3.10/site-packages/movement-0.0.0-py3.10.egg-info
+[1.090s] running install_scripts
+[1.106s] writing list of installed files to '/home/u2028576/slam_project/build/movement/install.log'
+[1.139s] Invoked command in '/home/u2028576/slam_project/movement' returned '0': PYTHONPATH=/home/u2028576/slam_project/build/movement/prefix_override:/home/u2028576/slam_project/install/movement/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/movement build --build-base /home/u2028576/slam_project/build/movement/build install --record /home/u2028576/slam_project/build/movement/install.log --single-version-externally-managed

@@ -1,0 +1,36 @@
+[0.782s] Invoking command in '/home/u2028576/slam_project/movement': PYTHONPATH=/home/u2028576/slam_project/build/movement/prefix_override:/home/u2028576/slam_project/install/movement/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/movement build --build-base /home/u2028576/slam_project/build/movement/build install --record /home/u2028576/slam_project/build/movement/install.log --single-version-externally-managed
+[1.006s] running egg_info
+[1.008s] creating ../build/movement/movement.egg-info
+[1.008s] writing ../build/movement/movement.egg-info/PKG-INFO
+[1.008s] writing dependency_links to ../build/movement/movement.egg-info/dependency_links.txt
+[1.008s] writing entry points to ../build/movement/movement.egg-info/entry_points.txt
+[1.008s] writing requirements to ../build/movement/movement.egg-info/requires.txt
+[1.008s] writing top-level names to ../build/movement/movement.egg-info/top_level.txt
+[1.008s] writing manifest file '../build/movement/movement.egg-info/SOURCES.txt'
+[1.010s] reading manifest file '../build/movement/movement.egg-info/SOURCES.txt'
+[1.010s] writing manifest file '../build/movement/movement.egg-info/SOURCES.txt'
+[1.010s] running build
+[1.010s] running build_py
+[1.010s] creating /home/u2028576/slam_project/build/movement/build
+[1.012s] creating /home/u2028576/slam_project/build/movement/build/lib
+[1.012s] creating /home/u2028576/slam_project/build/movement/build/lib/movement
+[1.013s] copying movement/Movement.py -> /home/u2028576/slam_project/build/movement/build/lib/movement
+[1.013s] copying movement/__init__.py -> /home/u2028576/slam_project/build/movement/build/lib/movement
+[1.013s] running install
+[1.013s] running install_lib
+[1.013s] creating /home/u2028576/slam_project/install/movement/lib/python3.10/site-packages/movement
+[1.013s] copying /home/u2028576/slam_project/build/movement/build/lib/movement/Movement.py -> /home/u2028576/slam_project/install/movement/lib/python3.10/site-packages/movement
+[1.013s] copying /home/u2028576/slam_project/build/movement/build/lib/movement/__init__.py -> /home/u2028576/slam_project/install/movement/lib/python3.10/site-packages/movement
+[1.013s] byte-compiling /home/u2028576/slam_project/install/movement/lib/python3.10/site-packages/movement/Movement.py to Movement.cpython-310.pyc
+[1.013s] byte-compiling /home/u2028576/slam_project/install/movement/lib/python3.10/site-packages/movement/__init__.py to __init__.cpython-310.pyc
+[1.013s] running install_data
+[1.014s] creating /home/u2028576/slam_project/install/movement/share/ament_index
+[1.014s] creating /home/u2028576/slam_project/install/movement/share/ament_index/resource_index
+[1.014s] creating /home/u2028576/slam_project/install/movement/share/ament_index/resource_index/packages
+[1.014s] copying resource/movement -> /home/u2028576/slam_project/install/movement/share/ament_index/resource_index/packages
+[1.014s] copying package.xml -> /home/u2028576/slam_project/install/movement/share/movement
+[1.014s] running install_egg_info
+[1.016s] Copying ../build/movement/movement.egg-info to /home/u2028576/slam_project/install/movement/lib/python3.10/site-packages/movement-0.0.0-py3.10.egg-info
+[1.016s] running install_scripts
+[1.037s] writing list of installed files to '/home/u2028576/slam_project/build/movement/install.log'
+[1.073s] Invoked command in '/home/u2028576/slam_project/movement' returned '0': PYTHONPATH=/home/u2028576/slam_project/build/movement/prefix_override:/home/u2028576/slam_project/install/movement/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/movement build --build-base /home/u2028576/slam_project/build/movement/build install --record /home/u2028576/slam_project/build/movement/install.log --single-version-externally-managed
