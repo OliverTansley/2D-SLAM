@@ -2,7 +2,7 @@ from DataStructures import Tree, Node
 from rclpy.node import Node
 from std_msgs.msg import Float32MultiArray
 from feature_detection_py.feature_detection_py.LineDetector import SeedSegment
-
+from geometry_msgs.msg import Pose2D, PoseArray
 import logging
 import random
 import math
@@ -29,16 +29,25 @@ class PathPlanner(Node):
     found:bool = False
     k:int = 200
 
+    start = ()
+    end = ()
+
     lines = []
 
     def __init__(self) -> None:
         super.__init__('minimal_subscriber')
         self.lines_subscription = self.create_subscription(Float32MultiArray,'line_segments',self.update_lines,10)
+        self.position_subscription = self.create_subscription(Pose2D,'robot_position',self.update_pos,10)
+
         super.__init__('minimal_publisher')
+        self.path_publisher = self.create_publisher(PoseArray,'path',10)
 
     def update_lines(msg):
         PathPlanner.lines = PathPlanner.get_seed_segs(msg)
         
+    def update_pos(msg):
+        PathPlanner.start = (msg[0],msg[1])
+
 
     @staticmethod
     def get_seed_segs(line_data):
@@ -48,10 +57,13 @@ class PathPlanner(Node):
 
 
     @staticmethod
-    def start(start: tuple[int,int],end: tuple[int,int])->Tree:
+    def start(publisher)->None:
         '''
         RRT with euclidean distance heuristic
         '''
+        start = PathPlanner.start
+        end = PathPlanner.end
+
         T:Tree = Tree(start[0],start[1])
         for _ in range(PathPlanner.N):
         
@@ -68,12 +80,21 @@ class PathPlanner(Node):
 
             # Extend tree with new node
             if not(PathPlanner.collision_detected(nearestNode,randomPos)):
-                T.addNode(nearestNode,Node(randomPos[0],randomPos[1]))
+                new_node = Node(randomPos[0],randomPos[1])
+                T.addNode(nearestNode,new_node)
                 if point_2_point_distance(randomPos,(end[0],end[1])) < 50:
                     PathPlanner.found:bool = True
+                    
+                    poses = []
+                    while new_node.x != start[0] and new_node.y != start[1]:
+                        poses.append(Pose2D(x=new_node.x,y=new_node.y,z=0))
+                        new_node = new_node.parent
 
-        return T
+                    poses.reverse()
 
+                    msg = PoseArray
+                    msg.poses = poses
+                    publisher.publish(msg)
 
     @staticmethod
     def collision_detected(node,point) -> bool:

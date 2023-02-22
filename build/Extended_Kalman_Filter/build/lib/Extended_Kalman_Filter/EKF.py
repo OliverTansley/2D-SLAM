@@ -33,9 +33,10 @@ class EKF(Node):
 
     @staticmethod
     def update_landmarks(line_data):
-        for i in range(0,len(line_data),6):
+        for i in range(0,len(line_data.data),6):
             s = SeedSegment.from_zipped_points(line_data[i],line_data[i+1],line_data[i+2],line_data[i+3],line_data[i+4],line_data[i+5])
             EKF.landmarks.append((s.x,s.y))
+
 
     @staticmethod
     def extended_kalman_filter(msg,publisher):
@@ -64,7 +65,7 @@ class EKF(Node):
             D,E,F = [(EKF.system_state[1] - EKF.landmarks[i][1])/L_range**2,(EKF.system_state[0] - EKF.landmarks[i][0])/L_range**2,-1]
             J_measurement = np.array([[A,B,C] + [0]*2*(i)+  [-A,-B],[D,E,F] + [0]*2*(i) + [-D,-E]])
 
-            # var = multi_dot((J_measurement,EKF.covariance_matrix,J_measurement.transpose()))
+            var = multi_dot((J_measurement,EKF.covariance_matrix,J_measurement.transpose()))
             
             R = multi_dot((np.identity(2),np.array([[L_range,0],[0,L_bearing*2*math.pi/360]]),np.identity(2)))
             K_gain = multi_dot((EKF.covariance_matrix,J_measurement.transpose(),np.linalg.inv(multi_dot((J_measurement,EKF.covariance_matrix,J_measurement.transpose()) + R))))

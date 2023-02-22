@@ -1,0 +1,26 @@
+[1.350s] Invoking command in '/home/u2028576/slam_project/Path_Planner': PYTHONPATH=/home/u2028576/slam_project/build/Path_Planner/prefix_override:/home/u2028576/slam_project/install/Path_Planner/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/Path_Planner build --build-base /home/u2028576/slam_project/build/Path_Planner/build install --record /home/u2028576/slam_project/build/Path_Planner/install.log --single-version-externally-managed
+[1.686s] running egg_info
+[1.688s] writing ../build/Path_Planner/Path_Planner.egg-info/PKG-INFO
+[1.689s] writing dependency_links to ../build/Path_Planner/Path_Planner.egg-info/dependency_links.txt
+[1.690s] writing entry points to ../build/Path_Planner/Path_Planner.egg-info/entry_points.txt
+[1.690s] writing requirements to ../build/Path_Planner/Path_Planner.egg-info/requires.txt
+[1.692s] writing top-level names to ../build/Path_Planner/Path_Planner.egg-info/top_level.txt
+[1.697s] reading manifest file '../build/Path_Planner/Path_Planner.egg-info/SOURCES.txt'
+[1.698s] writing manifest file '../build/Path_Planner/Path_Planner.egg-info/SOURCES.txt'
+[1.698s] running build
+[1.698s] running build_py
+[1.698s] copying Path_Planner/PathPlanner.py -> /home/u2028576/slam_project/build/Path_Planner/build/lib/Path_Planner
+[1.698s] copying Path_Planner/DataStructures.py -> /home/u2028576/slam_project/build/Path_Planner/build/lib/Path_Planner
+[1.701s] running install
+[1.701s] running install_lib
+[1.702s] copying /home/u2028576/slam_project/build/Path_Planner/build/lib/Path_Planner/PathPlanner.py -> /home/u2028576/slam_project/install/Path_Planner/lib/python3.10/site-packages/Path_Planner
+[1.703s] copying /home/u2028576/slam_project/build/Path_Planner/build/lib/Path_Planner/DataStructures.py -> /home/u2028576/slam_project/install/Path_Planner/lib/python3.10/site-packages/Path_Planner
+[1.704s] byte-compiling /home/u2028576/slam_project/install/Path_Planner/lib/python3.10/site-packages/Path_Planner/PathPlanner.py to PathPlanner.cpython-310.pyc
+[1.705s] byte-compiling /home/u2028576/slam_project/install/Path_Planner/lib/python3.10/site-packages/Path_Planner/DataStructures.py to DataStructures.cpython-310.pyc
+[1.706s] running install_data
+[1.707s] running install_egg_info
+[1.709s] removing '/home/u2028576/slam_project/install/Path_Planner/lib/python3.10/site-packages/Path_Planner-0.0.0-py3.10.egg-info' (and everything under it)
+[1.709s] Copying ../build/Path_Planner/Path_Planner.egg-info to /home/u2028576/slam_project/install/Path_Planner/lib/python3.10/site-packages/Path_Planner-0.0.0-py3.10.egg-info
+[1.710s] running install_scripts
+[1.740s] writing list of installed files to '/home/u2028576/slam_project/build/Path_Planner/install.log'
+[1.866s] Invoked command in '/home/u2028576/slam_project/Path_Planner' returned '0': PYTHONPATH=/home/u2028576/slam_project/build/Path_Planner/prefix_override:/home/u2028576/slam_project/install/Path_Planner/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/Path_Planner build --build-base /home/u2028576/slam_project/build/Path_Planner/build install --record /home/u2028576/slam_project/build/Path_Planner/install.log --single-version-externally-managed

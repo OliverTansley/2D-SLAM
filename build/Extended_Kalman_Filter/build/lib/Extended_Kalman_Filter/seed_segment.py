@@ -3,7 +3,6 @@ class SeedSegment:
     size = 30
 
     def __init__(self,m=0,c=0,xpnts=[],ypnts=[]) -> None:
-
         self.grad = m
         self.intersect = c
         self.max_X = max(xpnts)
@@ -38,6 +37,5 @@ class SeedSegment:
             if y < self.min_y:
                 y = self.min_y
             ys.append(y)
-
 
         plt.plot(xs,ys,"r")

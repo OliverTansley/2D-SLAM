@@ -7,12 +7,12 @@ def point_2_point_distance(point1: tuple[int,int],point2:tuple[int,int]) -> floa
     '''
     return math.sqrt((point1[0] - point2[0])**2 + (point1[1]-point2[1])**2)
 
-class Node:
+class TNode:
 
     def __init__(self, xpos:int, ypos: int) -> None:
         self.x:int = xpos
         self.y:int = ypos
-        self.neighbors:list[Node] = []
+        self.neighbors:list[TNode] = []
         self.marked: bool = False
         self.parent = []
     
@@ -24,15 +24,15 @@ class Tree:
 
 
     def __init__(self,xpos,ypos) -> None:
-        self.root: Node = Node(xpos,ypos)
-        self.nodes: list[Node] = [self.root]
+        self.root: TNode = TNode(xpos,ypos)
+        self.nodes: list[TNode] = [self.root]
 
 
-    def getClosestNode(self,randomNode)-> Node:
+    def getClosestNode(self,randomNode)-> TNode:
         '''
         returns the closest node to a coordinate
         '''
-        closestNode: Node = self.nodes[0]
+        closestNode: TNode = self.nodes[0]
         for node in self.nodes:
             if point_2_point_distance(randomNode,(node.x,node.y)) < point_2_point_distance((closestNode.x,closestNode.y),(node.x,node.y)):
                 closestNode = node

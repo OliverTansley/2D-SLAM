@@ -14,6 +14,7 @@ class Node:
         self.y:int = ypos
         self.neighbors:list[Node] = []
         self.marked: bool = False
+        self.parent = []
     
     def addNeighbor(self,Node) -> None:
         self.neighbors.append(Node)
@@ -43,6 +44,7 @@ class Tree:
         adds a node to another given node attatching it to the tree
         '''
         attatchNode.addNeighbor(NewNode)
+        NewNode.parent = attatchNode
         self.nodes.append(NewNode)
 
 

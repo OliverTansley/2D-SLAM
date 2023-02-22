@@ -1,13 +1,14 @@
-from DataStructures import Tree, Node
+from DataStructures import Tree, TNode
 from rclpy.node import Node
 from std_msgs.msg import Float32MultiArray
-from feature_detection_py.feature_detection_py.LineDetector import SeedSegment
-from geometry_msgs.msg import Pose2D, PoseArray
+from seed_segment import SeedSegment
+from geometry_msgs.msg import Pose, PoseArray
 import logging
 import random
 import math
 import matplotlib.pyplot as plt
-
+import rclpy
+from time import sleep
 def point_2_point_distance(point1: tuple[int,int],point2:tuple[int,int]) -> float:
     '''
     Get euclidean distance between to points represented as tuples (x1,y1) (x2,y2)
@@ -29,24 +30,37 @@ class PathPlanner(Node):
     found:bool = False
     k:int = 200
 
-    start = ()
-    end = ()
+    start = (0,0)
+    end = (10,10)
 
     lines = []
 
     def __init__(self) -> None:
-        super.__init__('minimal_subscriber')
-        self.lines_subscription = self.create_subscription(Float32MultiArray,'line_segments',self.update_lines,10)
-        self.position_subscription = self.create_subscription(Pose2D,'robot_position',self.update_pos,10)
 
-        super.__init__('minimal_publisher')
-        self.path_publisher = self.create_publisher(PoseArray,'path',10)
+        super().__init__('minimal_publisher')
+        self.path_publisher = self.create_publisher(PoseArray,'/goal_positions',10)
+        
+
+        super().__init__('minimal_subscriber')
+        self.lines_subscription = self.create_subscription(Float32MultiArray,'/line_segments',lambda msg :self.common_callback(msg),10)
+        self.position_subscription = self.create_subscription(Pose,'/robot_position',lambda msg :self.common_callback(msg),10)
+        PathPlanner.get_path(self.path_publisher)
+        
+        rclpy.spin(self)
+
 
     def update_lines(msg):
         PathPlanner.lines = PathPlanner.get_seed_segs(msg)
         
     def update_pos(msg):
-        PathPlanner.start = (msg[0],msg[1])
+        PathPlanner.start = (msg.orientation.x,msg.orientation.y)
+
+
+    def common_callback(self,msg):
+        if isinstance(msg,Float32MultiArray):
+            self.update_lines(msg)
+        if isinstance(msg,Pose):
+            PathPlanner.update_pos(msg)
 
 
     @staticmethod
@@ -54,24 +68,25 @@ class PathPlanner(Node):
         seed_segs = []
         for i in range(0,len(line_data),6):
             seed_segs.append(SeedSegment.from_zipped_points(line_data[i],line_data[i+1],line_data[i+2],line_data[i+3],line_data[i+4],line_data[i+5]))
+        return seed_segs
 
 
     @staticmethod
-    def start(publisher)->None:
+    def get_path(publisher)->None:
         '''
         RRT with euclidean distance heuristic
         '''
         start = PathPlanner.start
         end = PathPlanner.end
-
-        T:Tree = Tree(start[0],start[1])
+        print(PathPlanner.lines)
+        T:Tree = Tree(PathPlanner.start[0],PathPlanner.start[1])
         for _ in range(PathPlanner.N):
         
             # Select best node to extend (do while loop)
 
             while True:
-                randomPos = (end[0]*random.random(),end[1]*random.random())
-                nearestNode:Node = T.getClosestNode(randomPos)
+                randomPos = ((end[0]+2)*random.random(),(end[1]+2)*random.random())
+                nearestNode:TNode = T.getClosestNode(randomPos)
                 nearestNodescore:float = math.exp(-point_2_point_distance(randomPos,end)/PathPlanner.k)
                 rand_bound:float = random.random()
                 
@@ -80,21 +95,27 @@ class PathPlanner(Node):
 
             # Extend tree with new node
             if not(PathPlanner.collision_detected(nearestNode,randomPos)):
-                new_node = Node(randomPos[0],randomPos[1])
+                new_node = TNode(randomPos[0],randomPos[1])
                 T.addNode(nearestNode,new_node)
-                if point_2_point_distance(randomPos,(end[0],end[1])) < 50:
+                if point_2_point_distance(randomPos,(PathPlanner.end[0],PathPlanner.end[1])) < 5:
                     PathPlanner.found:bool = True
                     
                     poses = []
                     while new_node.x != start[0] and new_node.y != start[1]:
-                        poses.append(Pose2D(x=new_node.x,y=new_node.y,z=0))
+                        new_pose = Pose()
+                        new_pose.orientation.x = new_node.x
+                        new_pose.orientation.y = new_node.y
+                        new_pose.orientation.z = 0.0
+                        poses.append(new_pose)
                         new_node = new_node.parent
 
                     poses.reverse()
 
-                    msg = PoseArray
+                    msg = PoseArray()
                     msg.poses = poses
+                    print('sending path')
                     publisher.publish(msg)
+                    break
 
     @staticmethod
     def collision_detected(node,point) -> bool:
@@ -112,3 +133,7 @@ class PathPlanner(Node):
                 return True
         
         return False
+    
+if __name__ == '__main__':
+    rclpy.init()
+    pp = PathPlanner()

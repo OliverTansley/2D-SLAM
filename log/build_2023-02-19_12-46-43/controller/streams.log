@@ -1,0 +1,36 @@
+[1.383s] Invoking command in '/home/u2028576/slam_project/controller': PYTHONPATH=/home/u2028576/slam_project/build/controller/prefix_override:/home/u2028576/slam_project/install/controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/controller build --build-base /home/u2028576/slam_project/build/controller/build install --record /home/u2028576/slam_project/build/controller/install.log --single-version-externally-managed
+[1.750s] running egg_info
+[1.750s] creating ../build/controller/controller.egg-info
+[1.750s] writing ../build/controller/controller.egg-info/PKG-INFO
+[1.750s] writing dependency_links to ../build/controller/controller.egg-info/dependency_links.txt
+[1.750s] writing entry points to ../build/controller/controller.egg-info/entry_points.txt
+[1.753s] writing requirements to ../build/controller/controller.egg-info/requires.txt
+[1.753s] writing top-level names to ../build/controller/controller.egg-info/top_level.txt
+[1.753s] writing manifest file '../build/controller/controller.egg-info/SOURCES.txt'
+[1.753s] reading manifest file '../build/controller/controller.egg-info/SOURCES.txt'
+[1.753s] writing manifest file '../build/controller/controller.egg-info/SOURCES.txt'
+[1.753s] running build
+[1.753s] running build_py
+[1.756s] creating /home/u2028576/slam_project/build/controller/build
+[1.756s] creating /home/u2028576/slam_project/build/controller/build/lib
+[1.763s] creating /home/u2028576/slam_project/build/controller/build/lib/controller
+[1.763s] copying controller/Controller.py -> /home/u2028576/slam_project/build/controller/build/lib/controller
+[1.763s] copying controller/__init__.py -> /home/u2028576/slam_project/build/controller/build/lib/controller
+[1.764s] running install
+[1.764s] running install_lib
+[1.764s] creating /home/u2028576/slam_project/install/controller/lib/python3.10/site-packages/controller
+[1.764s] copying /home/u2028576/slam_project/build/controller/build/lib/controller/Controller.py -> /home/u2028576/slam_project/install/controller/lib/python3.10/site-packages/controller
+[1.764s] copying /home/u2028576/slam_project/build/controller/build/lib/controller/__init__.py -> /home/u2028576/slam_project/install/controller/lib/python3.10/site-packages/controller
+[1.764s] byte-compiling /home/u2028576/slam_project/install/controller/lib/python3.10/site-packages/controller/Controller.py to Controller.cpython-310.pyc
+[1.764s] byte-compiling /home/u2028576/slam_project/install/controller/lib/python3.10/site-packages/controller/__init__.py to __init__.cpython-310.pyc
+[1.764s] running install_data
+[1.764s] creating /home/u2028576/slam_project/install/controller/share/ament_index
+[1.764s] creating /home/u2028576/slam_project/install/controller/share/ament_index/resource_index
+[1.764s] creating /home/u2028576/slam_project/install/controller/share/ament_index/resource_index/packages
+[1.764s] copying resource/controller -> /home/u2028576/slam_project/install/controller/share/ament_index/resource_index/packages
+[1.764s] copying package.xml -> /home/u2028576/slam_project/install/controller/share/controller
+[1.764s] running install_egg_info
+[1.764s] Copying ../build/controller/controller.egg-info to /home/u2028576/slam_project/install/controller/lib/python3.10/site-packages/controller-0.0.0-py3.10.egg-info
+[1.764s] running install_scripts
+[1.793s] writing list of installed files to '/home/u2028576/slam_project/build/controller/install.log'
+[2.111s] Invoked command in '/home/u2028576/slam_project/controller' returned '0': PYTHONPATH=/home/u2028576/slam_project/build/controller/prefix_override:/home/u2028576/slam_project/install/controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/controller build --build-base /home/u2028576/slam_project/build/controller/build install --record /home/u2028576/slam_project/build/controller/install.log --single-version-externally-managed

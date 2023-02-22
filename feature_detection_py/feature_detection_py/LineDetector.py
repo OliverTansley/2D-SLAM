@@ -96,11 +96,11 @@ class LineDetector(Node):
     def __init__(self):
         
         super().__init__("minimal_publisher")
-        self.publisher= self.create_publisher(Float32MultiArray, 'line_segments', 10)     # CHANGE
+        self.publisher= self.create_publisher(Float32MultiArray, '/line_segments', 10)     # CHANGE
         
         super().__init__("minimal_subscriber")
         self.subscription = self.create_subscription(LaserScan,"/scan",lambda msg : self.make_seed_segments(msg,self.publisher),10)
-        rclpy.create_node("LineDetector")
+        
         rclpy.spin(self)
 
 
@@ -121,7 +121,6 @@ class LineDetector(Node):
             j = i + SeedSegment.size
             m,c = LineDetector.total_least_squares(xs[i:j],ys[i:j])
             
-            
             for point_index in range(i,min(j,len(lidar_data))):
                 valid_segment=True
                 
@@ -133,7 +132,7 @@ class LineDetector(Node):
                     valid_segment = False
                     break
                 
-            if valid_segment:
+            if valid_segment and len(LineDetector.seed_segments) < 30:
                 
                 # seed segment region growing
                 
