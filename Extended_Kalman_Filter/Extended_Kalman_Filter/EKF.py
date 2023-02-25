@@ -16,8 +16,8 @@ class EKF(Node):
     interpolator = interp1d([-1,1],[0,2*math.pi])
     curr_landmarks = 0
     C = 1
-    system_state = np.array([0,0,0])
-    covariance_matrix = np.matrix([[1,0,0],[0,1,0],[0,0,1]])
+    system_state = np.array([0,0,0],'f')
+    covariance_matrix = np.matrix([[1,0,0],[0,1,0],[0,0,1]],'f')
     landmarks = []
 
     def __init__(self) -> None:
@@ -58,16 +58,24 @@ class EKF(Node):
         '''
         
         newPos = msg.pose.pose.position
-        new_theta = EKF.interpolator(msg.pose.pose.orientation.w)
+        quat = msg.pose.pose.orientation
+        w = quat.w
+        x = quat.x
+        y = quat.y
+        z = quat.z
+        new_theta = math.atan2(2.0 * (w * z + x * y), w * w + x * x - y * y - z * z) + math.pi;
         
-        print(f'[{new_theta}]')
+        
+        
         dx,dy,dtheta = [EKF.system_state[0] - newPos.x,EKF.system_state[1] - newPos.y,EKF.system_state[2] - new_theta]
 
         EKF.system_state[0] = newPos.x
         EKF.system_state[1] = newPos.y
         EKF.system_state[2] = new_theta
 
-        J_prediction = np.array([[1,0,-dy],[0,1,dx],[0,0,1]])
+        
+
+        J_prediction = np.array([[1,0,-dy],[0,1,dx],[0,0,1]],'f')
         # Q_noise = EKF.C*np.matmul(np.array([dt*math.cos(EKF.system_state[2]),dt*math.sin(EKF.system_state[2]),dtheta]),np.array([dt*math.cos(EKF.system_state[2]),dt*math.sin(EKF.system_state[2]),dtheta]))
         EKF.covariance_matrix[0:3,0:3] = multi_dot((J_prediction,EKF.covariance_matrix[0:3,0:3],J_prediction))  # TODO add Q_noise to this value
         
@@ -86,7 +94,7 @@ class EKF(Node):
 
             A,B,C = [(EKF.system_state[0] - this_run_landmarks[i][0])/L_range,(EKF.system_state[1] - this_run_landmarks[i][1])/L_range,0]
             D,E,F = [(EKF.system_state[1] - this_run_landmarks[i][1])/L_range**2,(EKF.system_state[0] - this_run_landmarks[i][0])/L_range**2,-1]
-            J_measurement = np.array([[0]*cvWidth,[0]*cvWidth])
+            J_measurement = np.array([[0]*cvWidth,[0]*cvWidth],'f')
             J_measurement[0,0],J_measurement[0,1],J_measurement[0,2] = A,B,C
             J_measurement[1,0],J_measurement[1,1],J_measurement[1,2] = D,E,F
             J_measurement[0,i] = -A
@@ -98,7 +106,7 @@ class EKF(Node):
             #J_measurement = np.array([[A,B,C] + [0]*2*(i)+  [-A,-B]+ [0]*(cvWidth-5-i) ,[D,E,F] + [0]*2*(i) + [-D,-E] + [0]*(cvWidth-5-i) ])
             
             
-            R = np.array([[L_range,0],[0,L_bearing*2*math.pi/360]])
+            R = np.array([[L_range,0],[0,L_bearing*2*math.pi/360]],'f')
             var = multi_dot((J_measurement,EKF.covariance_matrix,J_measurement.transpose()))+R
             K_gain = multi_dot((EKF.covariance_matrix,J_measurement.transpose(),np.linalg.inv(multi_dot((J_measurement,EKF.covariance_matrix,J_measurement.transpose()) )+R)))
 
@@ -107,17 +115,17 @@ class EKF(Node):
         '''
         step 3: Update covariance matrix and system state to include new landmarks
         '''
-        EKF.system_state = np.array(EKF.system_state[0:3])
+        EKF.system_state = np.array(EKF.system_state[0:3],'f')
 
-        J_xr = np.array(([1,0,-dy],[0,1,dx]))
-        J_z = np.array(([math.cos(EKF.system_state[2] + dtheta),math.sin(EKF.system_state[2] + dtheta)],[math.sin(EKF.system_state[2] + dtheta), math.cos(EKF.system_state[2] + dtheta)]))
+        J_xr = np.array(([1,0,-dy],[0,1,dx]),'f')
+        J_z = np.array(([math.cos(EKF.system_state[2] + dtheta),math.sin(EKF.system_state[2] + dtheta)],[math.sin(EKF.system_state[2] + dtheta), math.cos(EKF.system_state[2] + dtheta)]),'f')
         
         for i in range(len(this_run_landmarks)):
             
             L_range = math.sqrt((this_run_landmarks[i][0] - EKF.system_state[0])**2 + (this_run_landmarks[i][1] - EKF.system_state[1])**2) 
             L_bearing = math.atan((this_run_landmarks[i][1] - EKF.system_state[1])/(this_run_landmarks[i][0]-EKF.system_state[0])) - EKF.system_state[2] 
 
-            R = multi_dot((np.identity(2),np.array([[L_range,0],[0,L_bearing*2*math.pi/360]]),np.identity(2)))
+            R = multi_dot((np.identity(2),np.array([[L_range,0],[0,L_bearing*2*math.pi/360]],'f'),np.identity(2)))
             
             P_Rn1 = np.dot(EKF.covariance_matrix[0:3,0:3],J_xr.transpose())
             
@@ -146,6 +154,7 @@ class EKF(Node):
             np.append(EKF.system_state,this_run_landmarks[i][1])
 
         # send robots position to robot_pos topic
+       
         msg = Pose()
         msg.orientation.x = float(EKF.system_state[0])
         msg.orientation.y = float(EKF.system_state[1])

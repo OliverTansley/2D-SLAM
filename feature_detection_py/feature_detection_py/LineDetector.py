@@ -92,12 +92,15 @@ class LineDetector(Node):
     epsilon = 0.03
     sigma = 0.03
     Pmin = 30
+    
 
     def __init__(self):
         
         super().__init__("minimal_publisher")
         self.publisher= self.create_publisher(Float32MultiArray, '/line_segments', 10)     # CHANGE
+
         
+
         super().__init__("minimal_subscriber")
         self.subscription = self.create_subscription(LaserScan,"/scan",lambda msg : self.make_seed_segments(msg,self.publisher),10)
         
