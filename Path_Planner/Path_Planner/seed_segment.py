@@ -1,3 +1,5 @@
+
+
 class SeedSegment:
 
     size = 30
@@ -26,7 +28,7 @@ class SeedSegment:
         seed_seg.y = (seed_seg.min_y + seed_seg.max_Y)/2
         return seed_seg
 
-    def plot_line(self) -> None:
+    def plot_line(self,ax) -> None:
 
         xs = [self.min_x,self.max_X]
         ys = []
@@ -38,4 +40,4 @@ class SeedSegment:
                 y = self.min_y
             ys.append(y)
 
-        plt.plot(xs,ys,"r")
+        ax.plot(xs,ys,'r+')

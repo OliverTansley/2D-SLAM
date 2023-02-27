@@ -31,7 +31,7 @@ class move(Node):
     def update_state(self,msg):
         self.robot_state = msg
         if self.plan != []:
-            self.go_2_goal((3,5))
+            self.go_2_goal(self.plan[0])
 
 
     def update_path(self,msg):
@@ -40,14 +40,12 @@ class move(Node):
         for pose in msg.poses:
             self.plan.append((pose.orientation.x,pose.orientation.y))
         self.plan.reverse()
-        
-    def go_2_go(self,targetPos):
-        print(self.robot_state)
-        speed = Twist()
-        speed.linear.x = 0.0
+
+    def circle(self):
+        speed = Twist
+        speed.linear.x = 0.2
         speed.linear.y = 0.0
         speed.angular.z = 0.1
-            
         self.publisher_.publish(speed)
 
     def go_2_goal(self,targetPos):
@@ -59,35 +57,41 @@ class move(Node):
             else:
                 if targetPos[0] < self.robot_state.orientation.x:
                     if targetPos[1] < self.robot_state.orientation.y:
-                        angle = math.atan((targetPos[0]-self.robot_state.orientation.x)/(targetPos[1] - self.robot_state.orientation.y)) +math.pi
+                        angle = math.atan((targetPos[1] - self.robot_state.orientation.y)/(targetPos[0]-self.robot_state.orientation.x)) 
                     else:
-                        angle = math.atan((targetPos[1] - self.robot_state.orientation.y)/(targetPos[0]-self.robot_state.orientation.x)) +3*math.pi/2
+                        angle = math.atan((targetPos[1] - self.robot_state.orientation.y)/(targetPos[0]-self.robot_state.orientation.x)) 
                 else:
                     if targetPos[1] < self.robot_state.orientation.y:
                         angle = math.atan((targetPos[1] - self.robot_state.orientation.y)/(targetPos[0]-self.robot_state.orientation.x)) + math.pi/2
                     else:
-                        angle = math.atan((targetPos[0]-self.robot_state.orientation.x)/(targetPos[1] - self.robot_state.orientation.y)) 
-
+                        angle = math.atan((targetPos[1] - self.robot_state.orientation.y)/(targetPos[0]-self.robot_state.orientation.x)) +math.pi
+  
+            if angle > 2*math.pi:
+                angle -= 2*math.pi
+            if angle < 0:
+                angle += 2*math.pi
             
-
-            ang_diff = ((angle) - (self.robot_state.orientation.z))
-            print(self.robot_state.orientation.z)
-            magnitude = 0.5 -0.5/math.exp(distance)
+            ang_diff = angle - self.robot_state.orientation.z
+            
+            magnitude = 0.5 -0.5*math.exp(-distance)
             
             speed = Twist()
 
-            if abs(ang_diff) < 0.1:
+            if abs(ang_diff) < 0.25:
                 speed.linear.x = magnitude
                 
             
-            speed.angular.z = 0.5 -0.5/math.exp(abs(ang_diff))
+            speed.angular.z = (ang_diff/abs(ang_diff))*(0.5 -0.5*math.exp(-2*abs(ang_diff)))
             if distance < 0.1:
                 self.plan.remove(targetPos)
+
             if self.plan == []:
                 speed.linear.x = 0.0
                 speed.linear.y = 0.0
                 speed.angular.z = 0.0
             self.publisher_.publish(speed)
+        print(targetPos)
+        print(self.plan)
 
         
     

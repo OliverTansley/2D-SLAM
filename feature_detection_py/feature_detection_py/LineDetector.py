@@ -69,7 +69,7 @@ class SeedSegment:
         seed_seg.y = (seed_seg.min_y + seed_seg.max_Y)/2
         return seed_seg
 
-    def plot_line(self) -> None:
+    def show(self,ax) -> None:
 
         xs = [self.min_x,self.max_X]
         ys = []
@@ -82,48 +82,46 @@ class SeedSegment:
             ys.append(y)
 
 
-        plt.plot(xs,ys,"r")
+        ax.plot(xs,ys,"r")
 
 
 class LineDetector(Node):
 
 
     seed_segments = []
-    epsilon = 0.03
-    sigma = 0.03
+    epsilon = 0.02
+    sigma = 0.02
     Pmin = 30
-    
 
     def __init__(self):
         
         super().__init__("minimal_publisher")
         self.publisher= self.create_publisher(Float32MultiArray, '/line_segments', 10)     # CHANGE
 
-        
-
         super().__init__("minimal_subscriber")
         self.subscription = self.create_subscription(LaserScan,"/scan",lambda msg : self.make_seed_segments(msg,self.publisher),10)
-        
+        plt.ion()
+        self.figure, self.ax = plt.subplots(figsize=(10, 8))
+        self.ax.set_xlim(-3,3)
+        self.ax.set_ylim(-3,3)
         rclpy.spin(self)
 
-
-    @staticmethod
-    def make_seed_segments(lidar_data,publisher) -> None:
+    
+    def make_seed_segments(self,lidar_data,publisher) -> None:
         '''
         Adds seed segments to seed segment array
         '''
         
-        lidar_data = lidar_data.ranges
 
+        lidar_data = lidar_data.ranges
         xs,ys = LineDetector.lidar_2_points(lidar_data)
         
-        plt.plot(xs,ys,"g.")
         valid_segment = True
         i = 0
         while i < len(lidar_data):
             j = i + SeedSegment.size
             m,c = LineDetector.total_least_squares(xs[i:j],ys[i:j])
-            
+
             for point_index in range(i,min(j,len(lidar_data))):
                 valid_segment=True
                 
@@ -135,7 +133,7 @@ class LineDetector(Node):
                     valid_segment = False
                     break
                 
-            if valid_segment and len(LineDetector.seed_segments) < 30:
+            if valid_segment and len(LineDetector.seed_segments) < 10:
                 
                 # seed segment region growing
                 
@@ -157,11 +155,11 @@ class LineDetector(Node):
                 new_segment = SeedSegment(m,c,xs[P_start:P_end],ys[P_start:P_end])
                 LineDetector.seed_segments.append(new_segment)
                 
-
                 msg = Float32MultiArray()
             
                 features = []
                 for s in LineDetector.seed_segments:
+                    s.show(self.ax)
                     features.append(s.grad)
                     features.append(s.intersect)
                     features.append(s.max_X)
@@ -170,13 +168,17 @@ class LineDetector(Node):
                     features.append(s.min_y)
 
                 msg.data = features
-
                 publisher.publish(msg)
 
                 i = P_end
             else:
                 i += 1
-                
+
+        self.figure.canvas.draw()
+        self.figure.canvas.flush_events()
+        print('HELLO')
+
+
     def predicted_point_distance(seedline,point) -> float:
         '''
         determines where the line, between a point and the robot intersects a given seed segment line
