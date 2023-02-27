@@ -81,7 +81,7 @@ class move(Node):
                 speed.linear.x = magnitude
                 
             
-            speed.angular.z = (ang_diff/abs(ang_diff))*(0.5 -0.5*math.exp(-2*abs(ang_diff)))
+            speed.angular.z = (ang_diff/abs(ang_diff))*(0.2 -0.2*math.exp(-2*abs(ang_diff)))
             if distance < 0.1:
                 self.plan.remove(targetPos)
 

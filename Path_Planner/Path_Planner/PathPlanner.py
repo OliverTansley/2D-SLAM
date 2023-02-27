@@ -33,7 +33,7 @@ class PathPlanner(Node):
     k:int = 200
 
     start = (0,0,0)
-    end = (0,3)
+    end = (0,10)
 
     lines = []
 
@@ -52,8 +52,8 @@ class PathPlanner(Node):
 
         plt.ion()
         self.figure, self.ax = plt.subplots(figsize=(10, 8))
-        self.ax.set_xlim(-6,6)
-        self.ax.set_ylim(-6,6)
+        self.ax.set_xlim(-12,12)
+        self.ax.set_ylim(-12,12)
         rclpy.spin(self)
 
 
@@ -106,12 +106,13 @@ class PathPlanner(Node):
             lidar_points = list(zip(xs,ys))
             
             self.get_path(self.path_publisher,self.link_lidar(lidar_points))
-        # else:
-        #     xs,ys = self.lidar_2_points(msg)
-        #     lidar_points = list(zip(xs,ys))
-        #     for i in range(len(self.poses)-2):
-        #         if self.collision_detected(((self.poses[i].orientation.x,self.poses[i].orientation.y)),(self.poses[i+1].orientation.x,self.poses[i+1].orientation.y),self.link_lidar(lidar_points)):
-        #             self.get_path(self.path_publisher,self.link_lidar(lidar_points))
+        else:
+            xs,ys = self.lidar_2_points(msg)
+            lidar_points = list(zip(xs,ys))
+            for i in range(len(self.poses)-1):
+                if self.collision_detected(((self.poses[i].orientation.x,self.poses[i].orientation.y)),(self.poses[i+1].orientation.x,self.poses[i+1].orientation.y),self.link_lidar(lidar_points)):
+                    self.get_path(self.path_publisher,self.link_lidar(lidar_points))
+                    break
 
     def point_2_line_distance(self,line,point):
         '''
