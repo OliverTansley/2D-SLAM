@@ -4,7 +4,7 @@ from std_msgs.msg import Float32MultiArray
 from seed_segment import SeedSegment
 from geometry_msgs.msg import Pose, PoseArray, Twist
 from sensor_msgs.msg import LaserScan
-import logging
+
 import random
 import math
 import matplotlib.pyplot as plt
@@ -148,6 +148,9 @@ class PathPlanner(Node):
             xs.append(self.start[0] - lidar_ranges[measurement] * math.sin(measurement*ang_inc + math.pi/2 + self.start[2]))
             ys.append(self.start[1] + lidar_ranges[measurement] * math.cos(measurement*ang_inc + math.pi/2 + self.start[2]))
         
+        for s in PathPlanner.lines:
+            s.plot_line()
+
         self.ax.plot(xs,ys,'b+')
         self.figure.canvas.draw()
         self.figure.canvas.flush_events()

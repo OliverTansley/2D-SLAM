@@ -40,4 +40,4 @@ class SeedSegment:
                 y = self.min_y
             ys.append(y)
 
-        ax.plot(xs,ys,'r+')
+        ax.plot(xs,ys,'r--')

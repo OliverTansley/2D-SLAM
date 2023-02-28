@@ -6,7 +6,7 @@ from scipy.odr import *
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
-
+from geometry_msgs.msg import Pose
 from std_msgs.msg import Float32MultiArray
 
 
@@ -95,26 +95,38 @@ class LineDetector(Node):
 
     def __init__(self):
         
+        self.robot_pos = (0,0,0)
+
         super().__init__("minimal_publisher")
-        self.publisher= self.create_publisher(Float32MultiArray, '/line_segments', 10)     # CHANGE
+        self.publisher= self.create_publisher(Float32MultiArray, '/line_segments', 10)    
 
         super().__init__("minimal_subscriber")
-        self.subscription = self.create_subscription(LaserScan,"/scan",lambda msg : self.make_seed_segments(msg,self.publisher),10)
+        self.subscription = self.create_subscription(LaserScan,"/scan",lambda msg : self.common_callback(msg),10)
+        self.position_subscription = self.create_subscription(Pose,"/robot_position",lambda msg : self.common_callback(msg),10)
+
         plt.ion()
         self.figure, self.ax = plt.subplots(figsize=(10, 8))
         self.ax.set_xlim(-3,3)
         self.ax.set_ylim(-3,3)
         rclpy.spin(self)
 
-    
-    def make_seed_segments(self,lidar_data,publisher) -> None:
+    def common_callback(self,msg):
+        if isinstance(msg,LaserScan):
+             self.make_seed_segments(msg,self.publisher)
+        if isinstance(msg,Pose):
+            pass
+
+    def update_pos(self,msg):
+        self.robot_pos = (msg.orientation.x,msg.orientation.y,msg.orientation.z)
+
+    def make_seed_segments(self,lidar_msg,publisher) -> None:
         '''
         Adds seed segments to seed segment array
         '''
         
 
-        lidar_data = lidar_data.ranges
-        xs,ys = LineDetector.lidar_2_points(lidar_data)
+        lidar_data = lidar_msg.ranges
+        xs,ys = self.lidar_2_points(lidar_msg)
         
         valid_segment = True
         i = 0
@@ -176,7 +188,7 @@ class LineDetector(Node):
 
         self.figure.canvas.draw()
         self.figure.canvas.flush_events()
-        print('HELLO')
+        
 
 
     def predicted_point_distance(seedline,point) -> float:
@@ -197,16 +209,19 @@ class LineDetector(Node):
     # HELPER FUNCTIONS
     
 
-    def lidar_2_points(lidar_ranges) -> List[List[float]]:
+    def lidar_2_points(self,lidar_msg):
         '''
         Converts raw lidar data to arrays of x and y coordinates relative to scanner
         '''
+        lidar_ranges = lidar_msg.ranges
+        ang_inc = lidar_msg.angle_increment
         xs = []
         ys = []
+       
         for measurement in range(0,len(lidar_ranges)):
-            xs.append(lidar_ranges[measurement] * math.sin(math.radians(measurement)))
-            ys.append(lidar_ranges[measurement] * math.cos(math.radians(measurement)))
-
+            xs.append(self.robot_pos[0] - lidar_ranges[measurement] * math.sin(measurement*ang_inc + math.pi/2 + self.robot_pos[2]))
+            ys.append(self.robot_pos[1] + lidar_ranges[measurement] * math.cos(measurement*ang_inc + math.pi/2 + self.robot_pos[2]))
+        
         return xs,ys
 
 
