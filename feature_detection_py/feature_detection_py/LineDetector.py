@@ -54,6 +54,8 @@ class SeedSegment:
         self.min_x = min(xpnts)
         self.min_y = min(ypnts)
         self.points = list(zip(xpnts,ypnts))
+        self.xpoints = xpnts
+        self.ypoints = ypnts
         self.x = (self.min_x + self.max_X)/2
         self.y = (self.min_y + self.max_Y)/2
         self.reobserved_times = 0
@@ -131,10 +133,7 @@ class LineDetector(Node):
         Adds seed segments to seed segment array
         '''
 
-        lidar_data = lidar_msg.ranges
         xs,ys = self.lidar_2_points(lidar_msg)
-        
-        
 
         valid_segment = True
         i = 0
@@ -182,7 +181,6 @@ class LineDetector(Node):
             
                 features = []
                 for s in LineDetector.seed_segments:
-                    s.show(self.ax)
                     features.append(s.grad)
                     features.append(s.intersect)
                     features.append(s.max_X)
@@ -198,14 +196,13 @@ class LineDetector(Node):
             else:
                 i += 1
 
-        
         self.figure.canvas.draw()
         self.figure.canvas.flush_events()
         
 
     def re_observed(self,new_segment):
         old_segment = self.get_closest_segment(new_segment)
-        print(math.atan(abs(new_segment.grad)))
+        
         if old_segment == None:
             return False
 
@@ -225,8 +222,8 @@ class LineDetector(Node):
 
 
     def get_closest_segment(self,new_segment):
-        distance = 100000
-        print(len(LineDetector.seed_segments))
+        distance = float('inf')
+        
         best_segment = None
         for old_segment in LineDetector.seed_segments:
             
@@ -265,6 +262,10 @@ class LineDetector(Node):
         ang_inc = lidar_msg.angle_increment
         xs = []
         ys = []
+
+        for s in LineDetector.seed_segments:
+            self.ax.plot(s.xpoints,s.ypoints,'b*')
+            s.show(self.ax)
        
         for measurement in range(0,len(lidar_ranges)):
             if lidar_ranges[measurement] != float('inf') :
