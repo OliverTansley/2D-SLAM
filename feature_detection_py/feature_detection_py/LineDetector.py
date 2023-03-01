@@ -44,6 +44,7 @@ class SeedSegment:
 
     size = 30
 
+
     def __init__(self,m=0,c=0,xpnts=[],ypnts=[]) -> None:
 
         self.grad = m
@@ -55,9 +56,12 @@ class SeedSegment:
         self.points = list(zip(xpnts,ypnts))
         self.x = (self.min_x + self.max_X)/2
         self.y = (self.min_y + self.max_Y)/2
+        self.reobserved_times = 0
+        self.reobserved = False
+
 
     @classmethod
-    def from_Float32MultiArray(cls,m,c,max_X,max_Y,min_x,min_y):
+    def from_Float32MultiArray(cls,m,c,max_X,max_Y,min_x,min_y,reob,reTime):
         seed_seg = SeedSegment()
         seed_seg.grad = m
         seed_seg.intersect = c
@@ -67,7 +71,10 @@ class SeedSegment:
         seed_seg.min_x = min_x
         seed_seg.x = (seed_seg.min_x + seed_seg.max_X)/2
         seed_seg.y = (seed_seg.min_y + seed_seg.max_Y)/2
+        seed_seg.reobserved = reob
+        seed_seg.reobserved_times = reTime
         return seed_seg
+    
 
     def show(self,ax) -> None:
 
@@ -89,9 +96,10 @@ class LineDetector(Node):
 
 
     seed_segments = []
-    epsilon = 0.02
-    sigma = 0.02
+    epsilon = 0.03
+    sigma = 0.03
     Pmin = 30
+    repeat_tolerance = 3
 
     def __init__(self):
         
@@ -110,34 +118,34 @@ class LineDetector(Node):
         self.ax.set_ylim(-3,3)
         rclpy.spin(self)
 
+
     def common_callback(self,msg):
         if isinstance(msg,LaserScan):
-             self.make_seed_segments(msg,self.publisher)
+            self.make_seed_segments(msg,self.publisher)
         if isinstance(msg,Pose):
-            pass
+            self.robot_pos = (msg.orientation.x,msg.orientation.y,msg.orientation.z)
 
-    def update_pos(self,msg):
-        self.robot_pos = (msg.orientation.x,msg.orientation.y,msg.orientation.z)
 
     def make_seed_segments(self,lidar_msg,publisher) -> None:
         '''
         Adds seed segments to seed segment array
         '''
-        
 
         lidar_data = lidar_msg.ranges
         xs,ys = self.lidar_2_points(lidar_msg)
         
+        
+
         valid_segment = True
         i = 0
-        while i < len(lidar_data):
+        while i < len(xs):
             j = i + SeedSegment.size
             m,c = LineDetector.total_least_squares(xs[i:j],ys[i:j])
 
-            for point_index in range(i,min(j,len(lidar_data))):
+            for point_index in range(i,min(j,len(xs))):
                 valid_segment=True
                 
-                if LineDetector.predicted_point_distance([m,c],[xs[point_index],ys[point_index]]) > LineDetector.sigma:
+                if self.predicted_point_distance([m,c],[xs[point_index],ys[point_index]]) > LineDetector.sigma:
                     valid_segment = False    
                     break
 
@@ -145,14 +153,14 @@ class LineDetector(Node):
                     valid_segment = False
                     break
                 
-            if valid_segment and len(LineDetector.seed_segments) < 10:
+            if valid_segment:
                 
                 # seed segment region growing
                 
                 P_start = i-1
                 P_end = j+1
                 
-                while P_end < len(lidar_data) and point_2_line_distance((m,c),(xs[j+1],ys[j+1])) < 0.002:
+                while P_end < len(xs) and point_2_line_distance((m,c),(xs[j+1],ys[j+1])) < 0.002:
                     m , c = LineDetector.total_least_squares(xs[i:P_end],ys[i:P_end])
                     P_end += 1
 
@@ -164,8 +172,11 @@ class LineDetector(Node):
                 
                 P_start += 1
 
+
                 new_segment = SeedSegment(m,c,xs[P_start:P_end],ys[P_start:P_end])
-                LineDetector.seed_segments.append(new_segment)
+
+                if not(self.re_observed(new_segment)):
+                    LineDetector.seed_segments.append(new_segment)
                 
                 msg = Float32MultiArray()
             
@@ -178,6 +189,7 @@ class LineDetector(Node):
                     features.append(s.max_Y)
                     features.append(s.min_x)
                     features.append(s.min_y)
+                    features.append(float(s.reobserved))
 
                 msg.data = features
                 publisher.publish(msg)
@@ -186,19 +198,55 @@ class LineDetector(Node):
             else:
                 i += 1
 
+        
         self.figure.canvas.draw()
         self.figure.canvas.flush_events()
         
 
+    def re_observed(self,new_segment):
+        old_segment = self.get_closest_segment(new_segment)
+        print(math.atan(abs(new_segment.grad)))
+        if old_segment == None:
+            return False
 
-    def predicted_point_distance(seedline,point) -> float:
+        if old_segment.reobserved_times <= LineDetector.repeat_tolerance:
+            accepted_points = 0
+            for p in new_segment.points:
+                if point_2_line_distance((old_segment.grad,old_segment.intersect),p) < 0.6:
+                    accepted_points += 1
+            
+            if accepted_points > len(new_segment.points)/2:
+                old_segment.reobserved = True
+                
+                return True
+            
+        return False
+
+
+
+    def get_closest_segment(self,new_segment):
+        distance = 100000
+        print(len(LineDetector.seed_segments))
+        best_segment = None
+        for old_segment in LineDetector.seed_segments:
+            
+            if point_2_point_distance((old_segment.x,old_segment.y),(new_segment.x,new_segment.y)) < distance:
+                distance = point_2_point_distance((old_segment.x,old_segment.y),(new_segment.x,new_segment.y))
+                best_segment = old_segment
+        
+        return best_segment
+
+
+
+    def predicted_point_distance(self,seedline,point) -> float:
         '''
         determines where the line, between a point and the robot intersects a given seed segment line
         '''
-
-        pointline_grad = point[1]/(point[0] +0.00000001) # TODO remove static assumption
-        pointline_intercept = 0 # intercept is always 0 as robot is still located at (0,0)
-                                # this will be changed once the static assumption is removed
+        if (point[0] - self.robot_pos[0]) == 0:
+            pointline_grad = (point[1]-self.robot_pos[1])*float('inf')
+        else:
+            pointline_grad = (point[1]-self.robot_pos[1])/(point[0] - self.robot_pos[0]) 
+            pointline_intercept = point[1] - pointline_grad*point[0]
         
         i_x = (seedline[1] - pointline_intercept)/(pointline_grad - seedline[0])
         i_y = (seedline[0]*pointline_intercept - seedline[1]*pointline_grad)/(seedline[0] - pointline_grad)
@@ -219,8 +267,9 @@ class LineDetector(Node):
         ys = []
        
         for measurement in range(0,len(lidar_ranges)):
-            xs.append(self.robot_pos[0] - lidar_ranges[measurement] * math.sin(measurement*ang_inc + math.pi/2 + self.robot_pos[2]))
-            ys.append(self.robot_pos[1] + lidar_ranges[measurement] * math.cos(measurement*ang_inc + math.pi/2 + self.robot_pos[2]))
+            if lidar_ranges[measurement] != float('inf') :
+                xs.append(self.robot_pos[0] - lidar_ranges[measurement] * math.sin(measurement*ang_inc + math.pi/2 + self.robot_pos[2]))
+                ys.append(self.robot_pos[1] + lidar_ranges[measurement] * math.cos(measurement*ang_inc + math.pi/2 + self.robot_pos[2]))
         
         return xs,ys
 

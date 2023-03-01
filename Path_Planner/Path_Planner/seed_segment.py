@@ -14,9 +14,10 @@ class SeedSegment:
         self.points = list(zip(xpnts,ypnts))
         self.x = (self.min_x + self.max_X)/2
         self.y = (self.min_y + self.max_Y)/2
+        self.reobserved = False
 
     @classmethod
-    def from_Float32MultiArray(cls,m,c,max_X,max_Y,min_x,min_y):
+    def from_Float32MultiArray(cls,m,c,max_X,max_Y,min_x,min_y,reob):
         seed_seg = SeedSegment()
         seed_seg.grad = m
         seed_seg.intersect = c
@@ -26,6 +27,7 @@ class SeedSegment:
         seed_seg.min_x = min_x
         seed_seg.x = (seed_seg.min_x + seed_seg.max_X)/2
         seed_seg.y = (seed_seg.min_y + seed_seg.max_Y)/2
+        seed_seg.reobserved = reob
         return seed_seg
 
     def plot_line(self,ax) -> None:
