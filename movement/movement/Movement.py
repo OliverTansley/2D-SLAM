@@ -30,9 +30,9 @@ class move(Node):
 
     def update_state(self,msg):
         self.robot_state = msg
-        if self.plan != []:
-            self.go_2_goal(self.plan[0])
-
+        # if self.plan != []:
+            # self.go_2_goal(self.plan[0])
+        self.circle()
 
     def update_path(self,msg):
         self.get_logger().info("Path recieved")
@@ -42,7 +42,7 @@ class move(Node):
         self.plan.reverse()
 
     def circle(self):
-        speed = Twist
+        speed = Twist()
         speed.linear.x = 0.2
         speed.linear.y = 0.0
         speed.angular.z = 0.1

@@ -59,7 +59,7 @@ class PathPlanner(Node):
 
     def common_callback(self,msg):
         if isinstance(msg,Float32MultiArray):
-            self.update_lines(msg)
+            PathPlanner.update_lines(msg)
             
         if isinstance(msg,Pose):
             self.update_pos(msg)

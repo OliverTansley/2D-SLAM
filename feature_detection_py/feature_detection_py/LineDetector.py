@@ -196,6 +196,8 @@ class LineDetector(Node):
             else:
                 i += 1
 
+        print(len(LineDetector.seed_segments))
+
         self.figure.canvas.draw()
         self.figure.canvas.flush_events()
         
@@ -264,14 +266,17 @@ class LineDetector(Node):
         ys = []
 
         for s in LineDetector.seed_segments:
-            self.ax.plot(s.xpoints,s.ypoints,'b*')
+            
             s.show(self.ax)
-       
+
+
         for measurement in range(0,len(lidar_ranges)):
             if lidar_ranges[measurement] != float('inf') :
                 xs.append(self.robot_pos[0] - lidar_ranges[measurement] * math.sin(measurement*ang_inc + math.pi/2 + self.robot_pos[2]))
                 ys.append(self.robot_pos[1] + lidar_ranges[measurement] * math.cos(measurement*ang_inc + math.pi/2 + self.robot_pos[2]))
-        
+
+        self.ax.plot(xs,ys,'b.')
+
         return xs,ys
 
 
