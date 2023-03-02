@@ -72,7 +72,7 @@ class EKF(Node):
         this_run_new_landmarks = EKF.landmarks
         self.ax.plot([msg.pose.pose.position.x ],[msg.pose.pose.position.y],'k.')
         
-        self.ax.plot(EKF.system_state[0],EKF.system_state[1],'r.')
+        # self.ax.plot(EKF.system_state[0],EKF.system_state[1],'r.')
 
         '''
         step 1: update the current state using the odometry data

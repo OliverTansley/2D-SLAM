@@ -98,14 +98,13 @@ class LineDetector(Node):
 
 
     seed_segments = []
-    epsilon = 0.03
-    sigma = 0.03
+    epsilon = 0.02
+    sigma = 0.02
     Pmin = 30
-    repeat_tolerance = 3
 
     def __init__(self):
         
-        self.robot_pos = (0,0,0)
+        self.robot_pos = None
 
         super().__init__("minimal_publisher")
         self.publisher= self.create_publisher(Float32MultiArray, '/line_segments', 10)    
@@ -116,15 +115,16 @@ class LineDetector(Node):
 
         plt.ion()
         self.figure, self.ax = plt.subplots(figsize=(10, 8))
-        self.ax.set_xlim(-3,3)
-        self.ax.set_ylim(-3,3)
+        self.ax.set_xlim(-12,12)
+        self.ax.set_ylim(-12,12)
         rclpy.spin(self)
 
 
     def common_callback(self,msg):
-        if isinstance(msg,LaserScan):
+        if isinstance(msg,LaserScan) and self.robot_pos != None:
             self.make_seed_segments(msg,self.publisher)
         if isinstance(msg,Pose):
+            self.ax.plot(msg.orientation.x,msg.orientation.y,'k.')
             self.robot_pos = (msg.orientation.x,msg.orientation.y,msg.orientation.z)
 
 
@@ -208,16 +208,15 @@ class LineDetector(Node):
         if old_segment == None:
             return False
 
-        if old_segment.reobserved_times <= LineDetector.repeat_tolerance:
-            accepted_points = 0
-            for p in new_segment.points:
-                if point_2_line_distance((old_segment.grad,old_segment.intersect),p) < 0.6:
-                    accepted_points += 1
+        accepted_points = 0
+        for p in new_segment.points:
+            if point_2_line_distance((old_segment.grad,old_segment.intersect),p) < 0.6:
+                accepted_points += 1
+        
+        if accepted_points > len(new_segment.points)/2:
+            old_segment.reobserved = True
             
-            if accepted_points > len(new_segment.points)/2:
-                old_segment.reobserved = True
-                
-                return True
+            return True
             
         return False
 
