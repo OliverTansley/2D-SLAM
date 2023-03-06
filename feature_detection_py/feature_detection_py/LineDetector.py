@@ -98,7 +98,7 @@ class LineDetector(Node):
 
 
     seed_segments = []
-    epsilon = 0.02
+    epsilon = 0.1
     sigma = 0.02
     Pmin = 30
 
@@ -124,7 +124,7 @@ class LineDetector(Node):
         if isinstance(msg,LaserScan) and self.robot_pos != None:
             self.make_seed_segments(msg,self.publisher)
         if isinstance(msg,Pose):
-            self.ax.plot(msg.orientation.x,msg.orientation.y,'k.')
+            self.ax.plot(msg.orientation.x,msg.orientation.y)
             self.robot_pos = (msg.orientation.x,msg.orientation.y,msg.orientation.z)
 
 
@@ -144,7 +144,7 @@ class LineDetector(Node):
             for point_index in range(i,min(j,len(xs))):
                 valid_segment=True
                 
-                if self.predicted_point_distance([m,c],[xs[point_index],ys[point_index]]) > LineDetector.sigma:
+                if self.predicted_point_distance([m,c],[xs[point_index],ys[point_index]],lidar_msg,i) > LineDetector.sigma:
                     valid_segment = False    
                     break
 
@@ -210,12 +210,14 @@ class LineDetector(Node):
 
         accepted_points = 0
         for p in new_segment.points:
-            if point_2_line_distance((old_segment.grad,old_segment.intersect),p) < 0.6:
+            if point_2_line_distance((old_segment.grad,old_segment.intersect),p) < 0.3:
                 accepted_points += 1
         
         if accepted_points > len(new_segment.points)/2:
             old_segment.reobserved = True
-            
+            print(new_segment.x,new_segment.y)
+            old_segment.x = new_segment.x
+            old_segment.y = new_segment.y
             return True
             
         return False
@@ -236,7 +238,7 @@ class LineDetector(Node):
 
 
 
-    def predicted_point_distance(self,seedline,point) -> float:
+    def predicted_point_distance(self,seedline,point,laserScan:LaserScan,index) -> float:
         '''
         determines where the line, between a point and the robot intersects a given seed segment line
         '''
@@ -244,7 +246,7 @@ class LineDetector(Node):
             pointline_grad = (point[1]-self.robot_pos[1])*float('inf')
         else:
             pointline_grad = (point[1]-self.robot_pos[1])/(point[0] - self.robot_pos[0]) 
-            pointline_intercept = point[1] - pointline_grad*point[0]
+        pointline_intercept = point[1] - pointline_grad*point[0]
         
         i_x = (seedline[1] - pointline_intercept)/(pointline_grad - seedline[0])
         i_y = (seedline[0]*pointline_intercept - seedline[1]*pointline_grad)/(seedline[0] - pointline_grad)

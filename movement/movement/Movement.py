@@ -43,9 +43,9 @@ class move(Node):
 
     def circle(self):
         speed = Twist()
-        speed.linear.x = 0.2
+        speed.linear.x = 0.2/2.5
         speed.linear.y = 0.0
-        speed.angular.z = 0.1
+        speed.angular.z = 0.1/2.5
         self.publisher_.publish(speed)
 
     def go_2_goal(self,targetPos):
