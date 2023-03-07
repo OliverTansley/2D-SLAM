@@ -50,25 +50,48 @@ class EKF(Node):
         EKF.system_state[0],EKF.system_state[1],EKF.system_state[2] = (dx,dy,dtheta)
     
     
+    first = False
     @staticmethod
     def update_landmarks(line_data):
-        
-        EKF.landmarks = []
-        EKF.seed_segments = []
-        for i in range(0,len(line_data.data),7):
-            s = SeedSegment.from_Float32MultiArray(line_data.data[i],line_data.data[i+1],line_data.data[i+2],line_data.data[i+3],line_data.data[i+4],line_data.data[i+5],bool(line_data.data[i+6]))
-            s.x = s.x 
-            s.y = s.y 
-            EKF.landmarks.append((s.x,s.y))
-            EKF.seed_segments.append(s)
+        if line_data.data == []:
+            for s in EKF.seed_segments:
+                s.reobserved = False
+        else:
+            noise = random.random()/10
+            EKF.landmarks = [(1 + noise,1 + noise),(2 + noise,1 + noise)]
+            s = SeedSegment()
+            s.x = 1 + noise
+            s.y = 1 + noise
+            if not(EKF.first):
+                EKF.first = True
+            else:
+                s.reobserved = True
+            
+            s2 = SeedSegment()
+            s2.x = 2 + noise
+            s2.y = 1 + noise
+            if not(EKF.first):
+                EKF.first = True
+            else:
+                s2.reobserved = True
+            EKF.seed_segments = [s,s2]
 
+
+            # for i in range(0,len(line_data.data),7):
+            #     s = SeedSegment.from_Float32MultiArray(line_data.data[i],line_data.data[i+1],line_data.data[i+2],line_data.data[i+3],line_data.data[i+4],line_data.data[i+5],bool(line_data.data[i+6]))
+                
+            #     s.x = s.x 
+            #     s.y = s.y 
+            #     EKF.landmarks.append((s.x,s.y))
+            #     EKF.seed_segments.append(s)
+            
     
 
     def extended_kalman_filter(self,msg:Odometry,publisher):
-
+        self.ax.cla()
         this_run_landmarks = EKF.prev_landmarks
         this_run_new_landmarks = EKF.landmarks
-        # self.ax.plot([msg.pose.pose.position.x ],[msg.pose.pose.position.y])
+        self.ax.plot([msg.pose.pose.position.x ],[msg.pose.pose.position.y],'k.')
         
         # self.ax.plot(EKF.system_state[0],EKF.system_state[1],'r.')
 
@@ -89,21 +112,23 @@ class EKF(Node):
         dy = newPos.y - EKF.system_state[1] 
         dtheta = new_theta - EKF.system_state[2]
 
+        
+
         # update state vector to contain new estimates of the robots position (purely odometry)
         EKF.system_state[0] = newPos.x 
         EKF.system_state[1] = newPos.y 
         EKF.system_state[2] = new_theta 
 
-        old = copy.deepcopy(EKF.system_state)
+        self.ax.plot(EKF.system_state[0],EKF.system_state[1],'r.')
 
-        dt = 1  #TODO THIS IS WHY COV MATRIX TOO BIG
+        dt = 0.1  
 
         # update the jacobian (the derivative of the state vector)
         J_prediction = np.array([[1,0,-dy],[0,1,dx],[0,0,1]],'f')
         Q_noise = EKF.C*np.matmul(np.array([dt*math.cos(EKF.system_state[2]),dt*math.sin(EKF.system_state[2]),dtheta],'f'),np.array([dt*math.cos(EKF.system_state[2]),dt*math.sin(EKF.system_state[2]),dtheta],'f'))
         
         # update the estimate of the covariance of the robots Pose
-        EKF.covariance_matrix[0:3,0:3] = multi_dot((J_prediction.transpose(),EKF.covariance_matrix[0:3,0:3],J_prediction)) + Q_noise 
+        EKF.covariance_matrix[0:3,0:3] = multi_dot((J_prediction.transpose(),EKF.covariance_matrix[0:3,0:3],J_prediction)) + Q_noise
         
         # update the first three rows of the covariance matrix
         EKF.covariance_matrix[0:3,:] = np.dot(J_prediction,EKF.covariance_matrix[0:3,:])
@@ -111,29 +136,33 @@ class EKF(Node):
         '''
         step 2: update the state from reobserved landmarks
         '''
-        for i in range(math.ceil((len(EKF.system_state)-3)/2)):
+        for i in range(math.floor((len(EKF.system_state)-3)/2)):
             
             if EKF.seed_segments[i].reobserved:
+                print("=====")
+                # print(f'landmark number: {i}')
+                # print(f'x coord        : {EKF.system_state[2*i+3+0]}')
+                # print(f'y coord        : {EKF.system_state[2*i+3+1]}')
+                for j in range(len(EKF.seed_segments)):
+                    self.ax.plot(EKF.system_state[2*i+3+0],EKF.system_state[2*i+3+1],'k+')
+                #     print(f'{EKF.seed_segments[j].x,EKF.seed_segments[j].y} #{j}')
+                
                 
                 cvWidth, _ = EKF.covariance_matrix.shape
                 
                 # get the range and bearing of the reobserved landmarks old observation
-                L_range = math.sqrt((EKF.system_state[i+3+0] - EKF.system_state[0])**2 + (EKF.system_state[i+3+1] - EKF.system_state[1])**2) 
-                L_bearing = math.atan((EKF.system_state[i+3+1] - EKF.system_state[1])/(EKF.system_state[i+3+0]-EKF.system_state[0])) - EKF.system_state[2] 
+                L_range = math.sqrt((EKF.system_state[2*i+3+0] - EKF.system_state[0])**2 + (EKF.system_state[2*i+3+1] - EKF.system_state[1])**2) 
+                L_bearing = math.atan((EKF.system_state[2*i+3+1] - EKF.system_state[1])/(EKF.system_state[2*i+3+0]-EKF.system_state[0])) - EKF.system_state[2] 
 
-                # old landmark measurement matrix
-                # h = self.get_measurement_matrix(L_range,L_bearing);
-
-                # old landmark measurement matrix
-                # h = np.array([L_range,L_bearing],'f')
-                delta = np.array([this_run_landmarks[i][0] - (EKF.system_state[i+3+0]+dx) ,this_run_landmarks[i][1]- (EKF.system_state[i+3+1]+dy) ])
+                # predicted landmark measurement matrix
+                h = np.array([L_range,L_bearing],'f')
                 
                 # create jacobian of the measurement model
-                A = (EKF.system_state[0] - this_run_landmarks[i][0])/L_range
-                B = (EKF.system_state[1] - this_run_landmarks[i][1])/L_range
+                A = (EKF.system_state[0] - EKF.system_state[2*i+3+0])/L_range
+                B = (EKF.system_state[1] - EKF.system_state[2*i+3+1])/L_range
                 C = 0
-                D = (EKF.system_state[1] - this_run_landmarks[i][1])/L_range**2
-                E = (EKF.system_state[0] - this_run_landmarks[i][0])/L_range**2
+                D = (EKF.system_state[1] - EKF.system_state[2*i+3+1])/L_range**2
+                E = (EKF.system_state[0] - EKF.system_state[2*i+3+0])/L_range**2
                 F = -1
                 J_measurement = np.array([[0]*cvWidth,[0]*cvWidth],'f')
                 J_measurement[0][0] = A
@@ -147,20 +176,21 @@ class EKF(Node):
                 J_measurement[1][3+2*i] = -D
                 J_measurement[1][3+2*i+1] = -E
                 
+                # print(J_measurement)
                 # measurement model for new measurement of the landmark
-                L_range = math.sqrt((this_run_landmarks[i][0] - EKF.system_state[0])**2 + (this_run_landmarks[i][1] - EKF.system_state[1])**2) 
-                L_bearing = math.atan((this_run_landmarks[i][1] - EKF.system_state[1])/(this_run_landmarks[i][0]-EKF.system_state[0])) - EKF.system_state[2] 
+                L_range = math.sqrt((this_run_new_landmarks[i][0] - EKF.system_state[0])**2 + (this_run_new_landmarks[i][1] - EKF.system_state[1])**2) 
+                L_bearing = math.atan((this_run_new_landmarks[i][1] - EKF.system_state[1])/(this_run_new_landmarks[i][0]-EKF.system_state[0])) - EKF.system_state[2] 
                 Z = np.array([L_range,L_bearing],'f')
 
-                # print(f'({this_run_landmarks[i][0]},{this_run_landmarks[i][1]}) ({this_run_new_landmarks[i][0]},{this_run_new_landmarks[i][1]})')
 
                 # calculate kalman gain for this landmark
-                # R = np.array([[1/100,0],[0,2*math.pi/360]],'f') # TODO ALSO MIGHT MAKE SYSTEM VALUES EXPLODE
-                K_gain = multi_dot((EKF.covariance_matrix,J_measurement.transpose(),np.linalg.inv(multi_dot((J_measurement,EKF.covariance_matrix,J_measurement.transpose()) ))))
-            
-                EKF.system_state += np.dot(K_gain , (delta))
-                EKF.covariance_matrix -= multi_dot((K_gain,np.linalg.inv(multi_dot((J_measurement,EKF.covariance_matrix,J_measurement.transpose()) )),K_gain.transpose())) 
-        
+                R = np.array([[1/100,0],[0,2*math.pi/360]],'f') 
+                K_gain = multi_dot((EKF.covariance_matrix,J_measurement.transpose(),np.linalg.inv(multi_dot((J_measurement,EKF.covariance_matrix,J_measurement.transpose())) + R)))
+                
+                EKF.system_state += np.dot(K_gain , (Z-h))
+                EKF.covariance_matrix -= np.dot((np.eye(cvWidth,cvWidth) - np.dot(K_gain,J_measurement)) , EKF.covariance_matrix)
+                print("=====")
+
         '''
         step 3: Update covariance matrix and system state to include new landmarks
         '''
@@ -203,26 +233,15 @@ class EKF(Node):
 
         # set all the new landmarks as previous landmarks for the next time step
         EKF.prev_landmarks = np.array(copy.deepcopy(EKF.landmarks),'f')
-        new = copy.deepcopy(EKF.system_state)
-        try:
-            print(new - old)
-        except:
-            pass
-        print("--")
+    
         # send robots position to robot_pos topic
         msg = Pose()
         msg.orientation.x = float(EKF.system_state[0])
         msg.orientation.y = float(EKF.system_state[1])
         msg.orientation.z = float(EKF.system_state[2])
-        
-    
-       
-        # print(np.array2string(EKF.system_state).replace('[[',' [').replace(']]',']'))
-        # print(np.array2string(EKF.covariance_matrix).replace('[[',' [').replace(']]',']'))
-        
-
+        print(EKF.system_state)
         publisher.publish(msg)
-        self.ax.plot(EKF.system_state[0],EKF.system_state[1],'.')
+        self.ax.plot(EKF.system_state[0],EKF.system_state[1],'g.')
         self.figure.canvas.draw()
         self.figure.canvas.flush_events()
         
