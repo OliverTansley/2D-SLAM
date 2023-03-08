@@ -65,11 +65,11 @@ class EKF(Node):
             EKF.landmarks = [(1,1)]
             s = SeedSegment()
             s.x = 1
-            s.y = 1 
+            s.y = 1
+            s.reobserved = len(EKF.system_state) == 5
             if not(EKF.first):
                 EKF.first = True
-            else:
-                s.reobserved = True
+            
             
             EKF.seed_segments = [s]
 
@@ -92,12 +92,9 @@ class EKF(Node):
             #     EKF.seed_segments.append(s)
             
     
-    xlocations = []
-    ylocations = []
-    first = True
     def odom_handler(self,odom:Odometry,landmarks:list):
         
-
+        
         state_est,cov_est = self.make_prediction(EKF.system_state,EKF.covariance_matrix,odom)
         state_est,cov_est = self.update_prediction(state_est,cov_est,landmarks)
 
@@ -112,23 +109,29 @@ class EKF(Node):
         msg.orientation.z = float(EKF.system_state[2])
         
         self.position_publisher.publish(msg)
+        self.ax.plot(state_est[0],state_est[1],'r.')
+        self.figure.canvas.draw()
+        self.figure.canvas.flush_events()
+
 
     def make_prediction(self,state_est:np.array,cov_est:np.array,odom:Odometry) -> list:
         '''
         Performs prediction step of EKF SLAM
         '''
-
+        ST_SZ = len(state_est)
         dx,dy,_ = self.get_odom_change(odom,state_est)
 
         odom_pos:list = self.get_odom_pos(odom)
         state_est[0],state_est[1],state_est[2] = odom_pos[0],odom_pos[1],odom_pos[2]
         
-        Fx = np.hstack((np.eye(3), np.zeros((len(state_est), 2 * int((len(state_est)-3)/2)))))
+        Fx = np.hstack((np.eye(3), np.zeros((3, 2 * int((len(state_est)-3)/2)))))
         jF = np.array([[0.,0.,-dy],[0.,0.,dx],[0.,0.,0.]],'f')
-        est_jacobian = np.eye(3) + Fx.transpose() @ jF @ Fx
+        
+        est_jacobian = np.eye(len(state_est)) + Fx.transpose() @ jF @ Fx
 
         Cx = np.diag([0.5, 0.5, np.deg2rad(30.0)])**2
-        cov_est[0:3,0:3] = est_jacobian.transpose() @ cov_est[0:3,0:3] @ est_jacobian.transpose() + Fx.transpose() @ Cx @ Fx
+       
+        cov_est[0:ST_SZ,0:ST_SZ] = est_jacobian.transpose() @ cov_est[0:ST_SZ,0:ST_SZ] @ est_jacobian.transpose() + Fx.transpose() @ Cx @ Fx
 
         return state_est,cov_est
     
@@ -139,19 +142,21 @@ class EKF(Node):
             minid = 3+2*lindex # points to x coord of current landmark
             
             if not(EKF.seed_segments[lindex].reobserved):   # add new landmark
-                print("yes")
-                temp_state = np.vstack((state_est, np.array((landmarks[lindex][0],landmarks[lindex][1]),'f')))
-                temp_cov = np.vstack((np.hstack((cov_est,np.zeros((len(cov_est),2)))),np.hstack((np.zeros((len(cov_est),2)),cov_est)),np.eye(2,2)))
+                EKF.seed_segments[lindex].reobserved = True
+                
+                temp_state = np.hstack((state_est, np.array((landmarks[lindex]),'f')))
+                temp_cov = np.pad(cov_est,[(0,2),(0,2)],mode='constant')
                 state_est = temp_state
                 cov_est = temp_cov
-
-            
+        
 
             lm = landmarks[lindex]
-            print(lm)
-            y, S, H = self.get_innovation(lm,state_est,cov_est,minid)
+            
+            y, S, H = self.get_innovation(lm,state_est,cov_est,lindex)
+            
             K = (cov_est @ H.transpose()) @ np.linalg.inv(S)
             state_est = state_est + (K @ y)
+            
             cov_est = (np.eye(len(state_est))-K @ H) @ cov_est
 
         return state_est,cov_est
@@ -159,8 +164,8 @@ class EKF(Node):
     
     def get_innovation(self,lm,state_est,cov_est,minid)-> list:
         delta = lm - state_est[0:2]
-        q = (delta.transpose() @ delta)[0,0]
-        zangle = math.atan2(delta[1,0],delta[0,0]) - state_est[2,0]
+        q = (delta.transpose() @ delta)  # TODO CHANGED
+        zangle = math.atan2(delta[1],delta[0]) - state_est[2]
         z = np.array([math.sqrt(q),EKF.restrict_angle(zangle)],'f')
 
         zp = self.get_measurement_mat(state_est[minid],state_est)
@@ -176,14 +181,15 @@ class EKF(Node):
 
     def jacobianH(self,q,delta,x,i) -> list:
         sq = math.sqrt(q)
-        G = np.array([[-sq * delta[0, 0], - sq * delta[1, 0], 0, sq * delta[0, 0], sq * delta[1, 0]],
-                  [delta[1, 0], - delta[0, 0], - q, - delta[1, 0], delta[0, 0]]])
+        G = np.array([[-sq * delta[0], - sq * delta[1], 0, sq * delta[0], sq * delta[1]],
+                  [delta[1], - delta[0], - q, - delta[1], delta[0]]])
 
         G = G / q
         nLM = int((len(x)-3)/2)
+        
         F1 = np.hstack((np.eye(3), np.zeros((3, 2 * nLM))))
         F2 = np.hstack((np.zeros((2, 3)), np.zeros((2, 2 * (i - 1))),
-                        np.eye(2), np.zeros((2, 2 * nLM - 2 * i))))
+                    np.eye(2), np.zeros((2, 2 * nLM - 2 * i))))
 
         F = np.vstack((F1, F2))
 
@@ -193,8 +199,8 @@ class EKF(Node):
 
     def get_measurement_mat(self,lm_pos,state_est):
         delta = lm_pos - state_est[0:2]
-        q = (delta.transpose() @ delta)[0,0]
-        zangle = math.atan2(delta[1,0],delta[0,0]) - state_est[2,0]
+        q = (delta.transpose() @ delta)
+        zangle = math.atan2(delta[1],delta[0]) - state_est[2]
         return np.array([math.sqrt(q),EKF.restrict_angle(zangle)],'f')
 
     @staticmethod
